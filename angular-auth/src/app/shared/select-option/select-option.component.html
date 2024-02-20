@@ -1,0 +1,32 @@
+<div class="fd-popover" style="width:100%" cdkOverlayOrigin #triggerOverlay="cdkOverlayOrigin" >
+  <div class="fd-popover__control">
+    <div class="fd-select">
+      <div aria-controls="h031XCM509" aria-expanded="false" aria-haspopup="listbox" class="fd-select__control"
+        aria-label="Country" tabindex="0">
+        <span class="fd-select__text-content">US</span>
+        <span class="fd-button fd-button--transparent fd-select__button">
+          <i class="sap-icon--slim-arrow-down"></i>
+        </span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<ng-template cdkConnectedOverlay [cdkConnectedOverlayOrigin]="triggerOverlay"
+  [cdkConnectedOverlayOpen]="isOpen">
+  <ng-container [ngTemplateOutlet]="selectOverlay"></ng-container>
+</ng-template>
+
+<ng-template #selectOverlay>
+  <div aria-hidden="false" class="fd-popover__body fd-popover__body--no-arrow fd-popover__body--dropdown"
+    id="h0C6A325b">
+    <ul aria-activedescendant="defaultSelectCombobox-currentlyFocusedItem" aria-labelledby="cozySelectLabel"
+      class="fd-list fd-list--dropdown" role="listbox">
+      @for (item of dataSource; track item) {
+        <li aria-selected="true" class="fd-list__item is-selected" role="option" tabindex="0">
+          <span class="fd-list__title">{{ item.name }}</span>
+        </li>
+      }
+    </ul>
+  </div>
+</ng-template>
