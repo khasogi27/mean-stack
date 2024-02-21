@@ -1,3 +1,4 @@
+import { IUser } from '@/interfaces/user.interface';
 import jwt, { JwtPayload } from 'jsonwebtoken';
 
 export const signToken = (payload: any): string => {
@@ -5,8 +6,7 @@ export const signToken = (payload: any): string => {
   return token;
 }
 
-export const verifyToken = (token: string): string | JwtPayload => {
+export const verifyToken = (token: string): JwtPayload | IUser | string | any => {
   const decode = jwt.verify(token, process.env.JWT_SECRET!);
-
   return decode;
 }

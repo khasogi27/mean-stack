@@ -1,7 +1,8 @@
 import { Request, Response, NextFunction } from 'express';
 import { validator } from '../utils/validate';
+import { asyncHandlerFix } from '../helpers/asyncHandler';
 
-export const registerValidation = async (req: Request, res: Response, next: NextFunction) => {
+export const registerValidation = asyncHandlerFix(async (req: Request, res: Response, next: NextFunction) => {
   const validateRule = {
     "fullName": "required|string|min:3",
     "email": "required|email",
@@ -19,9 +20,9 @@ export const registerValidation = async (req: Request, res: Response, next: Next
       next();
     }
   }).catch(err => console.log(err));
-}
+});
 
-export const loginValidation = async (req: Request, res: Response, next: NextFunction) => {
+export const loginValidation = asyncHandlerFix(async (req: Request, res: Response, next: NextFunction) => {
   const validateRule = {
     "email": "required|email", 
     "password":"required|min:6",
@@ -38,4 +39,4 @@ export const loginValidation = async (req: Request, res: Response, next: NextFun
       next();
     }
   }).catch(err => console.log(err));
-}
+});

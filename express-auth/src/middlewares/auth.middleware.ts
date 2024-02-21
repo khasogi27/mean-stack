@@ -1,14 +1,14 @@
-import jwt, { JwtPayload } from 'jsonwebtoken';
+import { verifyToken } from '../helpers/jwt';
+import { NextFunction, Request, Response } from 'express';
+import { asyncHandlerFix } from '../helpers/asyncHandler';
 
-const jwtSecret: string = process.env.JWT_SECRET || '';
-
-export const creteJwt = (req: any, res: any, next: any) => {
+export const createJwt = asyncHandlerFix(async (req: Request, res: Response, next: NextFunction) => {
  try {
-  const token: string = req.headers.authorization.replace("Bearer ", "");
-  const decoded: string | JwtPayload = jwt.verify(token, jwtSecret);
-  req.userData = decoded;
-  next();
- } catch (error) {
-  return res.status(401).json({ message: 'Unauthorized' });
- }
-}
+    const token: string | undefined = req.headers.authorization?.replace("Bearer ", "");
+    const decoded = verifyToken(token!);
+    req.body['loggedInUser'] = decoded;
+    next();
+  } catch (error) {
+    return res.status(401).json({ message: 'Unauthorized' });
+  }
+});
