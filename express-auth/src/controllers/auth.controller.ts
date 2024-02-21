@@ -10,9 +10,8 @@ import { IUser } from '@/interfaces/user.interface';
 const asyncHandlerFix = (fn: (req: Request, res: Response, next: NextFunction) => Promise<any>) => (req: Request, res: Response, next: NextFunction) => Promise.resolve(fn(req, res, next)).catch(next);
 
 export const register = asyncHandlerFix(async (req: Request, res: Response): Promise<any> => {
-  const reqBody: IUser = req.body;
-  
   try {
+    const reqBody: IUser = req.body;
     const verifyEmail: IUser | null = await userModel.findOne({ email: reqBody.email });
 
     if (verifyEmail) {
@@ -46,9 +45,8 @@ export const register = asyncHandlerFix(async (req: Request, res: Response): Pro
 });
 
 export const login = asyncHandlerFix(async (req: Request, res: Response): Promise<any> => {
-  const reqBody: IUser = req.body;
-  
   try {
+    const reqBody: IUser = req.body;
     const getUser: IUser | null = await userModel.findOne({ email: reqBody.email });
     if (!reqBody.password) reqBody.password = '';
 
@@ -66,9 +64,8 @@ export const login = asyncHandlerFix(async (req: Request, res: Response): Promis
 });
 
 export const userProfile = asyncHandlerFix(async (req: Request, res: Response) => {
-  const reqParams = req.params
-
   try {
+    const reqParams = req.params
     const getUser: IUser | null = await userModel.findOne({ userId: reqParams.userId });
 
     if (!getUser) {

@@ -1,5 +1,5 @@
 import { Request, Response, NextFunction } from 'express';
-import Validator from 'validatorjs';
+import { validator } from '../utils/validate';
 
 export const registerValidation = async (req: Request, res: Response, next: NextFunction) => {
   const validateRule = {
@@ -8,27 +8,17 @@ export const registerValidation = async (req: Request, res: Response, next: Next
     "password": "required|min:6",
   };
 
-  const validator = new Validator(req.body, validateRule);
-
-  try {
-    await new Promise<void>((resolve, rejects) => {
-      validator.checkAsync((err: any, status: any) => {
-        if (!status) {
-          res.status(412).send({
-            success: false,
-            message: 'Validation failed',
-            data: err,
-          });
-          rejects();
-        } else {
-          resolve();
-        }
+  await validator(req.body, validateRule, {}, (err: any, status: any) => {
+    if (!status) {
+      res.status(412).send({
+        success: false,
+        message: 'Validation failed',
+        data: err
       });
-    });
-    next();
-  } catch (error) {
-    console.log(error);
-  }
+    } else {
+      next();
+    }
+  }).catch(err => console.log(err));
 }
 
 export const loginValidation = async (req: Request, res: Response, next: NextFunction) => {
@@ -37,25 +27,15 @@ export const loginValidation = async (req: Request, res: Response, next: NextFun
     "password":"required|min:6",
   }
 
-  const validator = new Validator(req.body, validateRule);
-
-  try {
-    await new Promise<void>((resolve, rejects) => {
-      validator.checkAsync((err: any, status: any) => {
-        if (!status) {
-          res.status(412).send({
-            success: false,
-            message: 'Validation failed',
-            data: err,
-          });
-          rejects();
-        } else {
-          resolve();
-        }
+  await validator(req.body, validateRule, {}, (err: any, status: any) => {
+    if (!status) {
+      res.status(412).send({
+        success: false,
+        message: 'Validation failed',
+        data: err
       });
-    });
-    next();
-  } catch (error) {
-    console.log(error);
-  }
+    } else {
+      next();
+    }
+  }).catch(err => console.log(err));
 }
