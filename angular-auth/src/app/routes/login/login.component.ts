@@ -37,10 +37,5 @@ export class LoginComponent {
   onSubmit() {
     const formData = this.form.value;
     this._authSvc.login(formData);
-
-    // this._http.get('http://localhost:3000/api/auth/test')
-    //   .subscribe(resp => {
-    //     console.log(resp, 'here');
-    //   });
   }
 }

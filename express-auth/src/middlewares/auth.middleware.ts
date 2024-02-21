@@ -14,5 +14,3 @@ export const creteJwt = (req: any, res: any, next: any) => {
   });
  }
 }
-
-// export default creteJwt;

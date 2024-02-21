@@ -1,0 +1,299 @@
+<section class="fd-dynamic-page fd-dynamic-page--xl" aria-label="Dynamic Page Expandable Example"
+  xmlns="http://www.w3.org/1999/html">
+
+  <header class="fd-dynamic-page__header">
+    <div class="fd-dynamic-page__title-area " tabindex="0">
+      <div class="fd-dynamic-page__main-container">
+        <div class="fd-dynamic-page__breadcrumb-title-container">
+          <div class="fd-dynamic-page__title-container">
+            <h3 class="fd-title fd-title--h3">New Job Schedule</h3>
+          </div>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <div class="fd-dynamic-page__content">
+    <div class="fd-container fd-form-layout-grid-container fd-form-layout-grid-container--lg-vertical fd-form-layout-grid-container--xl-vertical">
+    
+      <div class="fd-row">
+        <div class="fd-form-header fd-margin-top-bottom--sm">
+          <span class="fd-form-header__text">Frequency</span>
+        </div>
+      
+        <div class="fd-row fd-form-item">
+          <div class="fd-col fd-col-md--2">
+            <label class="fd-form-label" for="input-2-name">Occurs:</label>
+          </div>
+          <div class="fd-col fd-col-md--2">
+            <select class="fd-input">
+              @for (item of occursFreqOpt; track item) {
+                <option [value]="item.id" (click)="occursFreqSelect = item.name">{{ item.name | titlecase }}</option>
+              }
+            </select>
+          </div>
+        </div>
+        @if (occursFreqSelect === 'monthly') {
+          <div class="fd-row fd-form-item">
+            <div class="fd-col fd-col-md--2">
+              <label class="fd-form-label" for="input-2-name">Recurs type:</label>
+            </div>
+            <div class="fd-col fd-col-md--2">
+              <select class="fd-input">
+                @for (item of recursFreqOpt; track item) {
+                  <option [value]="item.id" (click)="recursFreqSelect = item.name">{{ item.name | titlecase }}</option>
+                }
+              </select>
+            </div>
+          </div>
+          @if (recursFreqSelect == 'day') {
+            <div class="fd-row fd-form-item">
+              <div class="fd-col fd-col-md--2">
+                <label class="fd-form-label" for="input-2-name">Recurs every:</label>
+              </div>
+              <div class="fd-col fd-col-md--2">
+                <input class="fd-input" type="number" id="input-2-name">
+              </div>
+              <div class="fd-col fd-col-md--1">
+                <label class="fd-form-label" for="input-2-name">Of every</label>
+              </div>
+              <div class="fd-col fd-col-md--2">
+                <div class="fd-input-group">
+                  <input class="fd-input fd-input-group__input" type="number">
+                  <span class="fd-input-group__addon">Month(s)</span>
+                </div>
+              </div>
+            </div>
+          } @else {
+            <div class="fd-row fd-form-item">
+              <div class="fd-col fd-col-md--2">
+                <label class="fd-form-label" for="input-2-name">Recurs every:</label>
+              </div>
+              <div class="fd-col fd-col-md--1">
+                <input class="fd-input" type="text" id="input-2-name">
+              </div>
+              <div class="fd-col fd-col-md--1">
+                <input class="fd-input" type="text" id="input-2-name">
+              </div>
+              <div class="fd-col fd-col-md--1">
+                <label class="fd-form-label" for="input-2-name">Of every</label>
+              </div>
+              <div class="fd-col fd-col-md--2">
+                <div class="fd-input-group">
+                  <input class="fd-input fd-input-group__input" type="number">
+                  <span class="fd-input-group__addon">Month(s)</span>
+                </div>
+              </div>
+            </div>
+          }
+        } @else {
+          <div class="fd-row fd-form-item">
+            <div class="fd-col fd-col-md--2">
+              <label class="fd-form-label" for="input-2-name">Recurs every:</label>
+            </div>
+            <div class="fd-col fd-col-md--2">
+              <div class="fd-input-group">
+                <input class="fd-input fd-input-group__input" type="number">
+                <span class="fd-input-group__addon">
+                  {{ occursFreqSelect === 'weekly' ? 'Week(s) On' : 'Day(s)' }}
+                </span>
+              </div>
+            </div>
+          </div>
+          @if (occursFreqSelect === 'weekly') {
+            <div class="fd-row fd-form-item">
+              <div class="fd-col fd-col-md--2">
+                <label class="fd-form-label" for="input-2-name">&nbsp;</label>
+              </div>
+              <div class="fd-col fd-col-md--10">
+                <div class="fd-row">
+                  <div class="fd-col-md--3">
+                    <div class="fd-form-item">
+                      <input type="checkbox" class="fd-checkbox" id="monday">
+                      <label class="fd-checkbox__label" for="monday">
+                        <span class="fd-checkbox__checkmark" aria-hidden="true"></span>
+                        <div class="fd-checkbox__label-container">
+                          <span class="fd-checkbox__text">Monday</span>
+                        </div>
+                      </label>
+                    </div>
+                    <div class="fd-form-item">
+                      <input type="checkbox" class="fd-checkbox" id="tuedsday">
+                      <label class="fd-checkbox__label" for="tuedsday">
+                        <span class="fd-checkbox__checkmark" aria-hidden="true"></span>
+                        <div class="fd-checkbox__label-container">
+                          <span class="fd-checkbox__text">Tuedsday</span>
+                        </div>
+                      </label>
+                    </div>
+                    <div class="fd-form-item">
+                      <input type="checkbox" class="fd-checkbox" id="wednesday">
+                      <label class="fd-checkbox__label" for="wednesday">
+                        <span class="fd-checkbox__checkmark" aria-hidden="true"></span>
+                        <div class="fd-checkbox__label-container">
+                          <span class="fd-checkbox__text">Wednesday</span>
+                        </div>
+                      </label>
+                    </div>
+                  </div>
+                  <div class="fd-col-md--3">
+                    <div class="fd-form-item">
+                      <input type="checkbox" class="fd-checkbox" id="trusday">
+                      <label class="fd-checkbox__label" for="trusday">
+                        <span class="fd-checkbox__checkmark" aria-hidden="true"></span>
+                        <div class="fd-checkbox__label-container">
+                          <span class="fd-checkbox__text">Trusday</span>
+                        </div>
+                      </label>
+                    </div>
+                    <div class="fd-form-item">
+                      <input type="checkbox" class="fd-checkbox" id="friday">
+                      <label class="fd-checkbox__label" for="friday">
+                        <span class="fd-checkbox__checkmark" aria-hidden="true"></span>
+                        <div class="fd-checkbox__label-container">
+                          <span class="fd-checkbox__text">Friday</span>
+                        </div>
+                      </label>
+                    </div>
+                  </div>
+                  <div class="fd-col-md--3">
+                    <div class="fd-form-item">
+                      <input type="checkbox" class="fd-checkbox" id="saturay">
+                      <label class="fd-checkbox__label" for="saturay">
+                        <span class="fd-checkbox__checkmark" aria-hidden="true"></span>
+                        <div class="fd-checkbox__label-container">
+                          <span class="fd-checkbox__text">Saturay</span>
+                        </div>
+                      </label>
+                    </div>
+                    <div class="fd-form-item">
+                      <input type="checkbox" class="fd-checkbox" id="sunday">
+                      <label class="fd-checkbox__label" for="sunday">
+                        <span class="fd-checkbox__checkmark" aria-hidden="true"></span>
+                        <div class="fd-checkbox__label-container">
+                          <span class="fd-checkbox__text">Sunday</span>
+                        </div>
+                      </label>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          }
+        }
+      </div>
+
+      <div class="fd-row">
+        <div class="fd-form-header fd-margin-top-bottom--sm">
+          <span class="fd-form-header__text">Daily frequency</span>
+        </div>
+      
+        <div class="fd-row fd-form-item">
+          <div class="fd-col fd-col-md--2">
+            <label class="fd-form-label" for="input-2-name">Occurs type:</label>
+          </div>
+          <div class="fd-col fd-col-md--2">
+            <select class="fd-input">
+              @for (item of occursDailylOpt; track item) {
+                <option [value]="item.id" (click)="occursDailySelect = item.name">{{ item.name | titlecase }}</option>
+              }
+            </select>
+          </div>
+        </div>
+
+        @switch (occursDailySelect) {
+          @case ('once') {
+            <div class="fd-row fd-form-item">
+              <div class="fd-col fd-col-md--2">
+                <label class="fd-form-label" for="input-2-name">Occurs once at:</label>
+              </div>
+              <div class="fd-col fd-col-md--2">
+                <input class="fd-input" type="time" id="input-2-name">
+              </div>
+            </div>
+          }
+          @case ('every') {
+            <div class="fd-row fd-form-item">
+              <div class="fd-col fd-col-md--2">
+                <label class="fd-form-label" for="input-2-name">Occurs every:</label>
+              </div>
+              <div class="fd-col fd-col-md--1">
+                <input class="fd-input" type="number" id="input-2-name">
+              </div>
+              <div class="fd-col fd-col-md--1">
+                <select class="fd-input">
+                  @for (item of occursEverylOpt; track item) {
+                    <option [value]="item.id" (click)="occursEverySelect = item.name">{{ item.name | titlecase }}</option>
+                  }
+                </select>
+              </div>
+              <div class="fd-col fd-col-md--1">
+                <label class="fd-form-label" for="input-2-name">Starting at:</label>
+              </div>
+              <div class="fd-col fd-col-md--1">
+                <input class="fd-input" type="time" id="input-2-name">
+              </div>
+              <div class="fd-col fd-col-md--1">
+                <label class="fd-form-label" for="input-2-name">Ending at:</label>
+              </div>
+              <div class="fd-col fd-col-md--1">
+                <input class="fd-input" type="time" id="input-2-name">
+              </div>
+            </div>
+          }
+        }
+      </div>
+
+      <div class="fd-row">
+        <div class="fd-form-header fd-margin-top-bottom--sm">
+          <span class="fd-form-header__text">Duration</span>
+        </div>
+
+        <div class="fd-row fd-form-item">
+          <div class="fd-col fd-col-md--2">
+            <label class="fd-form-label" for="input-2-name">Start date:</label>
+          </div>
+          <div class="fd-col fd-col-md--2">
+            <input class="fd-input" type="date" id="input-2-name">
+          </div>
+        </div>
+
+        <div class="fd-row fd-form-item">
+          <div class="fd-col fd-col-md--2">
+            <label class="fd-form-label" for="input-2-name">End date:</label>
+          </div>
+          <div class="fd-col fd-col-md--2">
+            <select class="fd-input">
+              @for (item of durationDateOpt; track item) {
+                <option [value]="item.id" (click)="durationDateSelect = item.name">{{ item.name | titlecase }}</option>
+              }
+            </select>
+          </div>
+          @if (durationDateSelect == 'end date') {
+            <div class="fd-col fd-col-md--2">
+              <input class="fd-input" type="date" id="input-2-name">
+            </div>
+          }
+        </div>
+
+      </div>
+
+      <div class="fd-row">
+        <div class="fd-form-header fd-margin-top-bottom--sm">
+          <span class="fd-form-header__text">Summary</span>
+        </div>
+
+        <div class="fd-row fd-form-item">
+          <div class="fd-col fd-col-md--2">
+            <label class="fd-form-label" for="input-2-name">Description:</label>
+          </div>
+          <div class="fd-col fd-col-md--8">
+            <textarea class="fd-textarea" id="textarea-1"></textarea>
+          </div>
+        </div>
+      </div>
+    
+    </div>
+  </div>
+</section>
+

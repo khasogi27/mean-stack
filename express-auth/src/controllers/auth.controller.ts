@@ -3,26 +3,38 @@ import jwt from 'jsonwebtoken';
 import bcrypt from 'bcryptjs';
 import userModel from '../models/user.model';
 import { v4 as uuidv4 } from 'uuid';
+import { comparePassword } from '../helpers/bcrypt';
+import { signToken } from '../helpers/jwt';
+import { IUser } from '@/interfaces/user.interface';
 
 const asyncHandlerFix = (fn: (req: Request, res: Response, next: NextFunction) => Promise<any>) => (req: Request, res: Response, next: NextFunction) => Promise.resolve(fn(req, res, next)).catch(next);
 
-export const register = asyncHandlerFix(async (req: Request, res: Response) => {
-  const { fullName, email, password } = req.body;
-  const verifyEmail = await userModel.findOne({ email: email });
-
+export const register = asyncHandlerFix(async (req: Request, res: Response): Promise<any> => {
+  const reqBody: IUser = req.body;
+  
   try {
+    const verifyEmail: IUser | null = await userModel.findOne({ email: reqBody.email });
+
     if (verifyEmail) {
       return res.status(403).json({ message: 'Email already used' });
     } else {
       const userId = uuidv4();
-      bcrypt.hash(password, 10)
+      
+      bcrypt.hash(reqBody.password, 10)
         .then((hash) => {
-          const user = new userModel({ userId, fullName, email, role: 'client', password: hash });
+          const user = new userModel({ 
+            userId, 
+            fullName: reqBody.fullName, 
+            email: reqBody.email, 
+            role: 'client', 
+            password: hash 
+          });
+
           user.save()
             .then((result: any) => {
-              return res.status(201).json({ message: 'user successfuly created!', result, success: true });
-            }).catch((err: any) => {
-              res.status(500).json({ err });
+              return res.status(201).json({ message: 'User successfuly created!', result, success: true });
+            }).catch((error: any) => {
+              res.status(500).json({ error });
             });
         }).catch((err) => {
           return res.status(412).send({ success: false, message: err.message });
@@ -33,44 +45,36 @@ export const register = asyncHandlerFix(async (req: Request, res: Response) => {
   }
 });
 
-export const login = asyncHandlerFix(async (req: Request, res: Response) => {
-  const { email, password } = req.body;
-  let getUser!: any;
+export const login = asyncHandlerFix(async (req: Request, res: Response): Promise<any> => {
+  const reqBody: IUser = req.body;
+  
+  try {
+    const getUser: IUser | null = await userModel.findOne({ email: reqBody.email });
+    if (!reqBody.password) reqBody.password = '';
 
-  userModel.findOne({ email: email })
-    .then((user: any): Response<any> | Promise<any> => {
-      if (!user) {
-        return res.status(401).json({ message: 'Authenticion Failed' });
-      }
-      getUser = user;
-      return bcrypt.compare(password, user.password);
-    })
-    .then((resp) => {
-      if (!resp) {
-        return res.status(401).json({ message: 'Authenticion Failed' });
-      } else {
-        let jwtToken = jwt.sign(
-          { email: getUser.email, userId: getUser.userId },
-          process.env.JWT_SECRET!,
-          { expiresIn: '1h' }
-        );
-        return res.status(200).json({ accessToken: jwtToken, userId: getUser.userId });
-      }
-    })
-    .catch((err) => {
-      return res.status(401).json({ message: err.message, success: false });
-    });
+    if (!getUser) {
+      return res.status(401).json({ message: 'Authenticion Email Failed' });
+    } else if (!comparePassword(reqBody.password, getUser.password)) {
+      return res.status(401).json({ message: 'Authenticion Password Failed' });
+    } else {
+      const accessToken = signToken({ userId: getUser.userId, email: getUser.email });
+      return res.status(200).json({ accessToken, userId: getUser.userId });
+    }
+  } catch (error: any) {
+    return res.status(401).json({ message: error.message, success: false });
+  }
 });
 
 export const userProfile = asyncHandlerFix(async (req: Request, res: Response) => {
-  const { id } = req.params;
+  const reqParams = req.params
 
   try {
-    const verifyUser = await userModel.findOne({ userId: id });
-    if (!verifyUser) {
-      return res.status(403).json({ message: "user not found", success: false });
+    const getUser: IUser | null = await userModel.findOne({ userId: reqParams.userId });
+
+    if (!getUser) {
+      return res.status(403).json({ message: "User not found", success: false });
     } else {
-      return res.status(200).json({ message: `user ${verifyUser.fullName}`, success: true });
+      return res.status(200).json({ message: `User ${getUser.fullName}`, success: true });
     }
   } catch (error: any) {
     return res.status(401).json({ success: false, message: error.message });
@@ -80,18 +84,25 @@ export const userProfile = asyncHandlerFix(async (req: Request, res: Response) =
 export const usersList = asyncHandlerFix(async (req: Request, res: Response) => {
   try {
     const users = await userModel.find();
-    return res.status(200).json({ data: users, success: true, message: "users list" });
+
+    if (!users) {
+      return res.status(403).json({ message: "Data not found", success: false });
+    } else {
+      return res.status(200).json({ data: users, success: true, message: "Users list" });
+    }
   } catch (error: any) {
     return res.status(401).json({ success: false, message: error.message });
   }
 });
 
 export const removeUser = asyncHandlerFix(async (req: Request, res: Response) => {
+  const reqParams = req.params;
+
   try {
-    const { userId } = req.params;
-    const deleteUser = await userModel.findOneAndDelete({ userId });
+    const deleteUser = await userModel.findOneAndDelete({ userId: reqParams.userId });
+
     if (!deleteUser) { 
-      return res.status(403).json({ message: "user not found", success: false });
+      return res.status(403).json({ message: "User not found", success: false });
     } else {
       return res.status(200).json({ message: `Delete user ${deleteUser.fullName}`, success: true });
     }

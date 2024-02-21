@@ -14,7 +14,6 @@ enum STATUS {
 export const httpErrorHandlerInterceptor: HttpInterceptorFn = (req: HttpRequest<unknown>, next: HttpHandlerFn)  => {
   const _authSvc = inject(AuthService);
   const token = _authSvc.getToken();
-  console.log(token, '<<<token>>>');
   if (token) {
     const modifiedReq = req.clone({
       headers: req.headers.set('Authorization', `Bearer ${token}`)

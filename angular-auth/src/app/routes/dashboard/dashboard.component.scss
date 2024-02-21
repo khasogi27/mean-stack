@@ -1,0 +1,13 @@
+.fd-custom-container {
+  overflow: auto;
+  height: 90vh;
+  position: absolute;
+  width: 100%;
+}
+
+.fd-custom-content {
+  display: flex;
+  gap: 1rem;
+  padding: 0 0 1rem 0;
+  flex-wrap: wrap;
+}

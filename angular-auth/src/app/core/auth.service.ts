@@ -19,7 +19,7 @@ export class AuthService {
   login(args: IUser) {
     this._http.post('http://localhost:3000/api/auth/login', args)
       .subscribe((resp: any) => {
-        console.log(resp, '<<<resp>>>')
+        console.log(resp, '<<<accessToken>>>')
         const restUser = resp['accessToken'];
         this._localSvc.saveSessions(this._authSecretKey, JSON.stringify(restUser));
         this._router.navigateByUrl('dashboard');
