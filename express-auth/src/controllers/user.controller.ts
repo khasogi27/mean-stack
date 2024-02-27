@@ -10,12 +10,21 @@ export const userProfile = asyncHandlerFix(async (req: Request, res: Response) =
     const getUser: IUser | null = await userModel.findOne({ userId: reqParams.userId });
 
     if (!getUser) {
-      return res.status(403).json({ message: "User not found", success: false });
+      return res.status(403).json({ 
+        code: 1,
+        message: "User not found", 
+      });
     } else {
-      return res.status(200).json({ message: `User ${getUser.fullName}`, success: true });
+      return res.status(200).json({ 
+        code: 0,
+        message: `User ${getUser.fullName}`, 
+      });
     }
   } catch (error: any) {
-    return res.status(401).json({ success: false, message: error.message });
+    return res.status(401).json({ 
+      code: 1,
+      message: error.message,
+    });
   }
 });
 
@@ -24,12 +33,22 @@ export const usersList = asyncHandlerFix(async (req: Request, res: Response) => 
     const users = await userModel.find();
 
     if (!users) {
-      return res.status(403).json({ message: "Data not found", success: false });
+      return res.status(403).json({
+        code: 1, 
+        message: "Data not found", 
+      });
     } else {
-      return res.status(200).json({ data: users, success: true, message: "Users list" });
+      return res.status(200).json({ 
+        code: 0,
+        data: users, 
+        message: "Users list", 
+      });
     }
   } catch (error: any) {
-    return res.status(401).json({ success: false, message: error.message });
+    return res.status(401).json({ 
+      code: 1,
+      message: error.message,
+    });
   }
 });
 
@@ -40,11 +59,20 @@ export const removeUser = asyncHandlerFix(async (req: Request, res: Response) =>
     const deleteUser = await userModel.findOneAndDelete({ userId: reqParams.userId });
 
     if (!deleteUser) { 
-      return res.status(403).json({ message: "User not found", success: false });
+      return res.status(403).json({
+        code: 1, 
+        message: "User not found", 
+      });
     } else {
-      return res.status(200).json({ message: `Delete user ${deleteUser.fullName}`, success: true });
+      return res.status(200).json({ 
+        code: 0,
+        message: `Delete user ${deleteUser.fullName}`, 
+      });
     }
   } catch (error: any) {
-    return res.status(412).send({ success: false, message: error.message })
+    return res.status(412).send({ 
+      code: 1,
+      message: error.message,
+    });
   }
 });

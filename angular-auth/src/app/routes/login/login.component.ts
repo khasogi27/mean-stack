@@ -1,41 +1,45 @@
 import { Component, HostListener, inject } from '@angular/core';
-import { AuthService } from '../../core/auth.service';
-import { FormBuilder, FormGroup, ReactiveFormsModule } from '@angular/forms';
-import { HttpClient } from '@angular/common/http';
+import { AuthService, PostResponse } from '../../core/auth.service';
+import { FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
+import { RouterModule } from '@angular/router';
 
-export interface IUser {
+export interface IUserLogin {
   email: string;
   password: string;
 }
 
+
 @Component({
   selector: 'app-login',
   standalone: true,
-  imports: [ReactiveFormsModule ],
+  imports: [ReactiveFormsModule, RouterModule],
   templateUrl: './login.component.html',
   styleUrl: './login.component.scss'
 })
 export class LoginComponent {
-  private _authSvc = inject(AuthService);
-  private _http = inject(HttpClient);
+  public arrError: { email?: string, password?: string } = { email: '', password: '' };
+  public isPassword: boolean = true;
+  public _authSvc = inject(AuthService);
   
-  public fb = inject(FormBuilder);
-  public form: FormGroup = new FormGroup({});
+  public formLogin: FormGroup = new FormGroup({
+    email: new FormControl(''),
+    password: new FormControl('')
+  });
 
-  constructor() {
-    this.form = this.fb.group({
-      email: [''],
-      password: ['']
-    });
-    this.form.patchValue({
-      "email": "khasogi27@live.com",
-      "password": "rahasia"
-    });
+  get passwordVisible () {
+    return this.formLogin.controls['password'].value != '';
   }
 
   @HostListener('document:keydown.enter') 
   onSubmit() {
-    const formData = this.form.value;
-    this._authSvc.login(formData);
+    const formData = this.formLogin.value;
+    this._authSvc.login(formData).subscribe((resp: PostResponse) => {
+      if (resp.code != 0) {
+        const { email, password } = resp.result?.errors!;
+        this.arrError = { email: email ? email : '', password: password ? password : '' };
+        return;
+      }
+      console.log(resp, 'result onSubmit');
+    });
   }
 }

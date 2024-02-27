@@ -1,6 +1,7 @@
 import { Request, Response, NextFunction } from 'express';
 import { validator } from '../utils/validate';
 import { asyncHandlerFix } from '../helpers/asyncHandler';
+import { IRespJson, TRespStatus } from '@/interfaces/response.interface';
 
 export const registerValidation = asyncHandlerFix(async (req: Request, res: Response, next: NextFunction) => {
   const validateRule = {
@@ -11,11 +12,11 @@ export const registerValidation = asyncHandlerFix(async (req: Request, res: Resp
 
   await validator(req.body, validateRule, {}, (err: any, status: any) => {
     if (!status) {
-      res.status(412).send({
-        success: false,
+      res.status(412 as TRespStatus).send({
+        code: 1,
         message: 'Validation failed',
         data: err
-      });
+      } as IRespJson);
     } else {
       next();
     }
@@ -30,11 +31,11 @@ export const loginValidation = asyncHandlerFix(async (req: Request, res: Respons
 
   await validator(req.body, validateRule, {}, (err: any, status: any) => {
     if (!status) {
-      res.status(412).send({
-        success: false,
+      res.status(412 as TRespStatus).send({
+        code: 1,
         message: 'Validation failed',
-        data: err
-      });
+        result: err
+      } as IRespJson);
     } else {
       next();
     }

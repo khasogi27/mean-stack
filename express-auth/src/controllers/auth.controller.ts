@@ -5,7 +5,7 @@ import { v4 as uuidv4 } from 'uuid';
 import { comparePassword } from '../helpers/bcrypt';
 import { signToken } from '../helpers/jwt';
 import { asyncHandlerFix } from '../helpers/asyncHandler';
-import { IUser } from '../interfaces/user.interface';
+import { IRespJson, IUser, TRespStatus } from '../interfaces/user.interface';
 
 
 export const register = asyncHandlerFix(async (req: Request, res: Response): Promise<any> => {
@@ -14,7 +14,11 @@ export const register = asyncHandlerFix(async (req: Request, res: Response): Pro
     const verifyEmail: IUser | null = await userModel.findOne({ email: reqBody.email });
 
     if (verifyEmail) {
-      return res.status(403).json({ message: 'Email already used' });
+      return res.status(401 as TRespStatus).json({
+        code: 1,
+        message: 'Validation failed',
+        result: { errors: { email: ['Email already used'] } }
+      } as IRespJson);
     } else {
       const userId = uuidv4();
       
@@ -29,17 +33,19 @@ export const register = asyncHandlerFix(async (req: Request, res: Response): Pro
           });
 
           user.save()
-            .then((result: any) => {
-              return res.status(201).json({ message: 'User successfuly created!', result, success: true });
+            .then((data: any) => {
+              return res.status(200 as TRespStatus).json({
+                code: 1,
+                message: 'User successfuly created!', 
+                result: { datas: data }
+              } as IRespJson);
             }).catch((error: any) => {
               res.status(500).json({ error });
             });
-        }).catch((err) => {
-          return res.status(412).send({ success: false, message: err.message });
         });
     }
   } catch (error: any) {
-    return res.status(412).send({ success: false, message: error.message })
+    return res.status(412 as TRespStatus).send({ code: 1, message: error.message } as IRespJson);
   }
 });
 
@@ -49,14 +55,26 @@ export const login = asyncHandlerFix(async (req: Request, res: Response): Promis
     const getUser: IUser | null = await userModel.findOne({ email: reqBody.email });
 
     if (!getUser) {
-      return res.status(401).json({ message: 'Authenticion Email Failed' });
+      res.status(401 as TRespStatus).json({ 
+        code: 1, 
+        message: 'Validation failed', 
+        result: { errors: { email: ['Authenticion Email Failed'] } } 
+      } as IRespJson);
     } else if (!comparePassword(reqBody.password, getUser.password)) {
-      return res.status(401).json({ message: 'Authenticion Password Failed' });
+      res.status(401 as TRespStatus).json({ 
+        code: 1, 
+        message: 'Validation failed', 
+        result: { errors: { email: ['Authenticion Password Failed'] } } 
+      } as IRespJson);
     } else {
       const accessToken = signToken({ userId: getUser.userId, email: getUser.email });
-      return res.status(200).json({ accessToken, userId: getUser.userId });
+      res.status(200 as TRespStatus).json({ 
+        code: 0, 
+        message: 'Validation failed', 
+        result: { datas: { userId: getUser.userId, accessToken } } 
+      } as IRespJson);
     }
   } catch (error: any) {
-    return res.status(401).json({ message: error.message, success: false });
+    res.status(401 as TRespStatus).json({ code: 1, message: error.message } as IRespJson);
   }
 });

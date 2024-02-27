@@ -33,6 +33,10 @@ export const routes: Routes = [
     loadComponent: () => import('./routes/login/login.component').then(c => c.LoginComponent),
   },
   {
+    path: 'register',
+    loadComponent: () => import('./routes/register/register.component').then(c => c.RegisterComponent),
+  },
+  {
     path: '**',
     redirectTo: 'dashboard:quu:'
   }

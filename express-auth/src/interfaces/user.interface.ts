@@ -5,3 +5,8 @@ export interface IUser {
   password: string;
   role: string;
 }
+
+export interface IResultErrUserJson {
+  email?: string[],
+  password?: string[]
+}

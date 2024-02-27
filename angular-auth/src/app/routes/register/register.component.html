@@ -1,0 +1,48 @@
+<div class="fd-container register-container">
+  <div class="fd-row register-content">
+    <div class='fd-col--4'>
+      <div class="fd-col-12 fd-margin-bottom--sm">
+        <h2 class="fd-title fd-title--h2">Register</h2>
+      </div>
+      <div [formGroup]="formRegister">
+        <div class='fd-col--12'>
+          <div class="fd-form-item">
+            <label class="fd-form-label" for="input-1">Full Name:</label>
+            <input class="fd-input" type="text" id="input-1" formControlName="fullName">
+          </div>
+        </div>
+        <div class='fd-col--12'>
+          <div class="fd-form-item">
+            <label class="fd-form-label" for="input-1">Email:</label>
+            <input class="fd-input" type="text" id="input-1" formControlName="email">
+          </div>
+        </div>
+        <div class='fd-col--12'>
+          <div class="fd-form-item">
+            <label class="fd-form-label" for="input-1">Password:</label>
+            <div class="fd-input-group">
+              <input class="fd-input" [type]="isPassword ? 'password': 'text'" id="input-1" formControlName="password">
+              @if (passwordVisible) {
+                <span class="fd-input-group__addon fd-input-group__addon--button">
+                  <button class="fd-input-group__button fd-button fd-button--transparent"
+                    (click)="isPassword = !isPassword">
+                    <span class="sap-icon--hide" role="presentation"></span>
+                  </button>
+                </span>
+              }
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class='fd-col--12 fd-margin-top--sm'>
+        <button class="fd-button" (click)="onSubmit()">
+          <span class="fd-button__text">Submit</span>
+        </button>
+        <span class="fd-margin-begin-end--tiny">OR</span>
+        <a routerLink="/login" class="fd-link">
+          <span class="fd-link__content">Login ?</span>
+        </a>
+      </div>
+    </div>
+  </div>
+</div>

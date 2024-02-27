@@ -1,9 +1,23 @@
-import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { HttpClient } from '@angular/common/http';
 import { Injectable, inject } from '@angular/core';
-import { map, switchMap } from 'rxjs';
 import { LocalService } from './local.service';
 import { Router } from '@angular/router';
-import { IUser } from '../routes/login/login.component';
+import { IUserLogin } from '../routes/login/login.component';
+import { IUserRegister } from '../routes/register/register.component';
+import { environment } from '../../environments/environment.development';
+import { Observable, map } from 'rxjs';
+
+interface ResultPostResp extends IUserRegister { 
+  accessToken: string, 
+  userId: string,
+  errors?: IUserRegister
+};
+
+export interface PostResponse {
+  message: string,
+  result?: ResultPostResp,
+  code: 0 | 1
+}
 
 @Injectable({
   providedIn: 'root'
@@ -16,14 +30,62 @@ export class AuthService {
 
   constructor() { }
 
-  login(args: IUser) {
-    this._http.post('http://localhost:3000/api/auth/login', args)
-      .subscribe((resp: any) => {
-        console.log(resp, '<<<accessToken>>>')
-        const restUser = resp['accessToken'];
-        this._localSvc.saveSessions(this._authSecretKey, JSON.stringify(restUser));
-        this._router.navigateByUrl('dashboard');
-      });
+  // register(args: IUserRegister): void {
+  //   this._http.post<PostResponse>(environment.api_service + '/api/auth/register', args)
+  //     .subscribe((resp: PostResponse) => {
+  //       if (resp.code != 0) {
+  //         console.log(resp.message);
+  //         return;
+  //       }
+  //       const getResult = resp.result;
+  //       console.log(getResult?.userId, '<<<userId>>>');
+  //       this._router.navigateByUrl('login');
+  //     });
+  // }
+
+  register(args: IUserRegister): Observable<PostResponse> {
+    return this._http.post<PostResponse>(environment.api_service + '/api/auth/register', args)
+      .pipe(
+        map((resp: PostResponse) => {
+          if (resp.code != 0) {
+            console.log(resp.message, '<<<error register>>>');
+          } else {
+            const getResult = resp.result;
+            console.log(getResult?.userId, '<<<userId>>>');
+            this._router.navigateByUrl('login');
+          }
+          return resp;
+        }));
+  }
+
+  // login(args: IUserLogin): void {
+  //   this._http.post<PostResponse>(environment.api_service + '/api/auth/login', args)
+  //     .subscribe((resp: PostResponse) => {
+  //       if (resp.code != 0) {
+  //         console.log(resp.message);
+  //         return;
+  //       }
+  //       const getResult = resp.result;
+  //       console.log(getResult?.accessToken, '<<<accessToken>>>');
+  //       this._localSvc.saveSessions(this._authSecretKey, JSON.stringify(getResult?.accessToken));
+  //       this._router.navigateByUrl('dashboard');
+  //     });
+  //   }
+
+  login(args: IUserLogin): Observable<PostResponse> {
+    return this._http.post<any>(environment.api_service + '/api/auth/login', args)
+      .pipe(
+        map((resp: PostResponse) => {
+          if (resp.code != 0) {
+            console.log(resp.message, '<<<error login>>>');
+          } else {
+            const getResult = resp.result;
+            console.log(getResult?.accessToken, '<<<accessToken>>>');
+            this._localSvc.saveSessions(this._authSecretKey, JSON.stringify(getResult?.accessToken));
+            this._router.navigateByUrl('dashboard');
+          }
+          return resp;
+      }));
   }
 
   logout() {
