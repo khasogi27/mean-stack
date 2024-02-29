@@ -1,8 +1,8 @@
 import express, { Express } from 'express';
 import * as dotenv from 'dotenv'
 import cors from 'cors';
-import validEnv from './utils/validEnv';
-import indexRoute from './routers/index.route';
+import { validEnv } from '@/utils/index.util';
+import indexRoute from '@/routers/index.route';
 
 dotenv.config();
 validEnv();

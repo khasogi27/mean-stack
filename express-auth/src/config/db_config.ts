@@ -2,7 +2,7 @@ import mongoose, { ConnectOptions } from 'mongoose';
 const MONGODB_URI = process.env.MONGO_URL || 'mongodb+srv://khasogi27:rahasia@auth.cgyekj8.mongodb.net/?retryWrites=true&w=majority';
 // const MONGODB_URI = process.env.MONGO_URL || 'mongodb://localhost:27017';
 
-const connectToDB = async (): Promise<any> => {
+export const connectToDB = async (): Promise<any> => {
   const options: ConnectOptions = {
     // useNewUrlParser: true,
     // useUnifiedTopology: 
@@ -21,5 +21,3 @@ const connectToDB = async (): Promise<any> => {
     return Promise.reject(false);
   }
 }
-
-export default connectToDB;

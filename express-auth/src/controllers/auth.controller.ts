@@ -1,11 +1,11 @@
 import { Request, Response } from 'express';
 import bcrypt from 'bcryptjs';
-import userModel from '../models/user.model';
+import { userModel } from '@/models/user.model';
 import { v4 as uuidv4 } from 'uuid';
-import { comparePassword } from '../helpers/bcrypt';
-import { signToken } from '../helpers/jwt';
-import { asyncHandlerFix } from '../helpers/asyncHandler';
-import { IRespJson, IUser, TRespStatus } from '../interfaces/user.interface';
+import { comparePassword, signToken } from '@/helpers/index.helper';
+import { asyncHandlerFix } from '@/utils/asyncHandler';
+import { TRespStatus, IRespJson } from '@/interfaces/response.interface';
+import { IUser } from '@/interfaces/user.interface';
 
 
 export const register = asyncHandlerFix(async (req: Request, res: Response): Promise<any> => {
@@ -70,8 +70,14 @@ export const login = asyncHandlerFix(async (req: Request, res: Response): Promis
       const accessToken = signToken({ userId: getUser.userId, email: getUser.email });
       res.status(200 as TRespStatus).json({ 
         code: 0, 
-        message: 'Validation failed', 
-        result: { datas: { userId: getUser.userId, accessToken } } 
+        message: 'User successfuly login!', 
+        result: { datas: { 
+          accessToken, 
+          userId: getUser.userId, 
+          fullName: getUser.fullName, 
+          role: getUser.role, 
+          email: getUser.email 
+        } }
       } as IRespJson);
     }
   } catch (error: any) {

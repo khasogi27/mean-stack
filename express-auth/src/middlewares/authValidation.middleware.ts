@@ -1,7 +1,6 @@
 import { Request, Response, NextFunction } from 'express';
-import { validator } from '../utils/validate';
-import { asyncHandlerFix } from '../helpers/asyncHandler';
 import { IRespJson, TRespStatus } from '@/interfaces/response.interface';
+import { asyncHandlerFix, validator } from '@/utils/index.util';
 
 export const registerValidation = asyncHandlerFix(async (req: Request, res: Response, next: NextFunction) => {
   const validateRule = {

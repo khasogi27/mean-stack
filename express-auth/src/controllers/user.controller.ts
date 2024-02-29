@@ -1,16 +1,17 @@
 import { Request, Response } from 'express';
-import userModel from '../models/user.model';
-import { IUser } from '../interfaces/user.interface';
-import { asyncHandlerFix } from '../helpers/asyncHandler';
+import { userModel } from '@/models/user.model';
+import { IUser } from '@/interfaces/user.interface';
+import { TRespStatus } from '@/interfaces/response.interface';
+import { asyncHandlerFix } from '@/utils/asyncHandler';
 
 
 export const userProfile = asyncHandlerFix(async (req: Request, res: Response) => {
   try {
-    const reqParams = req.params;
+    const reqParams = req.query;
     const getUser: IUser | null = await userModel.findOne({ userId: reqParams.userId });
 
     if (!getUser) {
-      return res.status(403).json({ 
+      return res.status(403 as TRespStatus).json({ 
         code: 1,
         message: "User not found", 
       });
@@ -18,6 +19,12 @@ export const userProfile = asyncHandlerFix(async (req: Request, res: Response) =
       return res.status(200).json({ 
         code: 0,
         message: `User ${getUser.fullName}`, 
+        result: { datas: { 
+          userId: getUser.userId, 
+          fullName: getUser.fullName, 
+          role: getUser.role, 
+          email: getUser.email 
+        } }
       });
     }
   } catch (error: any) {

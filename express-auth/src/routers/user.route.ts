@@ -1,13 +1,11 @@
-
 import { Router } from "express";
+import { createJwt } from '@/middlewares/auth.middleware';
+import { usersList, removeUser, userProfile } from "@/controllers/user.controller";
+
 const router = Router();
 
-import { usersList, removeUser, userProfile } from "../controllers/user.controller";
-import { createJwt } from '../middlewares/auth.middleware';
-
 router.get('/users', createJwt, usersList);
-router.delete('/user/:userId', createJwt, removeUser);
-
-router.get('/profile/:userId', createJwt, userProfile);
+router.delete('/user', createJwt, removeUser);
+router.get('/profile', createJwt, userProfile);
 
 export default router;

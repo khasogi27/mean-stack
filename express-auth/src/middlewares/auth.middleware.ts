@@ -1,8 +1,9 @@
-import { verifyToken } from '../helpers/jwt';
+
 import { NextFunction, Request, Response } from 'express';
-import { asyncHandlerFix } from '../helpers/asyncHandler';
 import { IUser } from '@/interfaces/user.interface';
-import userModel from '@/models/user.model';
+import { asyncHandlerFix } from '@/utils/index.util';
+import { verifyToken } from '@/helpers/jwt';
+import { userModel } from '@/models/user.model';
 
 export const createJwt = asyncHandlerFix(async (req: Request, res: Response, next: NextFunction) => {
  try {
@@ -13,7 +14,8 @@ export const createJwt = asyncHandlerFix(async (req: Request, res: Response, nex
     if (getUser?.role === 'admin') {
       req.body['loggedInUser'] = decoded;
       next();
-    } else {
+    } 
+    if (getUser?.role !== 'admin') {
       return res.status(401).json({ message: 'Unauthorized' });
     }
   } catch (error) {
