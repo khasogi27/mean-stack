@@ -1,24 +1,22 @@
-
 import { NextFunction, Request, Response } from 'express';
-import { IUser } from '@/interfaces/user.interface';
-import { asyncHandlerFix } from '@/utils/index.util';
 import { verifyToken } from '@/helpers/jwt';
-import { userModel } from '@/models/user.model';
+import { IResponseJson, TResponseStatus } from '@/interfaces/response.interface';
+import { doesNotMatch } from 'assert';
 
-export const createJwt = asyncHandlerFix(async (req: Request, res: Response, next: NextFunction) => {
- try {
+export class CreateJsonWebToken {
+  
+  static createJwt(req: Request, res: Response, next: NextFunction): void {
     const token: string | undefined = req.headers.authorization?.replace("Bearer ", "");
-    const decoded = verifyToken(token!);
-    const getUser: IUser | null = await userModel.findOne({ userId: decoded.userId });
-   
-    if (getUser?.role === 'admin') {
+    const decoded = verifyToken(token!)
+
+    if (decoded?.expired) {
+      res.status(401 as TResponseStatus).json({ code: 1, message: "Unauthorized! Access Token was expired!" } as IResponseJson);
+    } else if (decoded) {
       req.body['loggedInUser'] = decoded;
       next();
-    } 
-    if (getUser?.role !== 'admin') {
-      return res.status(401).json({ message: 'Unauthorized' });
+    } else {
+      res.status(401 as TResponseStatus).json({ code: 1, message: 'Unauthorized' } as IResponseJson);
     }
-  } catch (error) {
-    return res.status(401).json({ message: 'Unauthorized' });
   }
-});
+
+}

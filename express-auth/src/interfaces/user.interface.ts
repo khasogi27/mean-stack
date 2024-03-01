@@ -1,12 +1,5 @@
-export interface IUser {
-  userId: string;
-  fullName: string;
-  email: string;
-  password: string;
-  role: string;
-}
+import { IProfile } from "./response.interface";
 
-export interface IResultErrUserJson {
-  email?: string[],
-  password?: string[]
+export interface IUser extends IProfile {
+  password: string;
 }

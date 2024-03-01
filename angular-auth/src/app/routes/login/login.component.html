@@ -10,7 +10,9 @@
             <label class="fd-form-label" for="input-1">Email:</label>
             <div class="fd-popover">
               <div class="fd-popover__control" aria-controls="popoverEmail" aria-expanded="true" aria-haspopup="true">
-                <input class="fd-input" type="text" id="input-1" formControlName="email">
+                <div class="fd-input-group">
+                  <input class="fd-input" type="text" id="input-1" formControlName="email">
+                </div>
               </div>
               <div class="fd-popover__body fd-popover__body--input-message-group fd-popover__body--no-arrow"
                 [attr.aria-hidden]="arrError.email == ''" id="popoverEmail">
@@ -28,9 +30,8 @@
                   <input class="fd-input" [type]="isPassword ? 'password': 'text'" id="input-1" formControlName="password">
                   @if (passwordVisible) {
                     <span class="fd-input-group__addon fd-input-group__addon--button">
-                      <button class="fd-input-group__button fd-button fd-button--transparent"
-                        (click)="isPassword = !isPassword">
-                        <span class="sap-icon--hide" role="presentation"></span>
+                      <button class="fd-input-group__button fd-button fd-button--transparent" (click)="isPassword = !isPassword">
+                        <span [class]="isPassword ? 'sap-icon--show' : 'sap-icon--hide'" role="presentation"></span>
                       </button>
                     </span>
                   }

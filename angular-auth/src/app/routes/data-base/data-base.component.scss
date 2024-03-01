@@ -1,0 +1,57 @@
+.progress-container {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  justify-content: center;
+  display: flex;
+}
+
+.progress-content {
+  margin: 8rem auto;
+  text-align: center;
+}
+
+.progress-wrapper {
+  width: 240px;
+  height: 240px;
+  padding: 1rem; 
+}
+
+.progress-wrapper, .progress-bar {
+  position: relative;
+  display: flex;
+  justify-content: center;
+  margin: auto;
+  text-align: center;
+  align-content: center;
+  align-items: center;
+}
+
+.pie {
+  width: 240px;
+  padding: 2px;
+  background:#aab8ff;
+  border-radius: 50%;
+  transform: rotate(-90deg);
+}
+
+.pie circle {
+  animation: rotate 1.5s ease-in;
+}
+
+.progress-text {
+  position: absolute;
+  display: flex;
+  margin: auto;
+  color: #000000;
+  font-size: 48px;
+}
+
+circle {
+  stroke-linecap: butt;
+  transition: stroke-dashoffset 0.1s linear;
+}
+
+.control {
+  position: relative;
+}

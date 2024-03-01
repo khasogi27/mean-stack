@@ -1,8 +1,8 @@
 import { HttpErrorResponse, HttpHandlerFn, HttpInterceptorFn, HttpRequest, HttpResponse } from "@angular/common/http";
 import { inject } from "@angular/core";
-import { AuthService } from "./auth.service";
-import { catchError, of, throwError } from "rxjs";
+import { catchError, of } from "rxjs";
 import { Router } from "@angular/router";
+import { TokenService } from "../shared/services/token.service";
 
 enum STATUS {
   UNAUTHORIZED = 401,
@@ -12,19 +12,20 @@ enum STATUS {
 }
 
 export const httpErrorHandlerInterceptor: HttpInterceptorFn = (req: HttpRequest<unknown>, next: HttpHandlerFn)  => {
-  const _authSvc = inject(AuthService);
-  const _router = inject(Router);
-  const token = _authSvc.getToken();
+  const _router: Router = inject(Router);
+  const _tokenSvc: TokenService = inject(TokenService);
+  const token: string = _tokenSvc.getToken();
+  const tokenExp: boolean = _tokenSvc.getTokenExpired();
 
-  if (token) {
+  if (token && !tokenExp) {
     const modifiedReq = req.clone({
-      headers: req.headers.set('Authorization', `Bearer ${token}`)
+      headers: req.headers.set('Authorization', `Bearer ${JSON.parse(token)}`)
     });
     return next(modifiedReq);
   }
 
   return next(req).pipe(catchError((error) => {
-    const errorPages = [STATUS.UNAUTHORIZED, STATUS.FORBIDDEN, STATUS.NOT_FOUND, STATUS.INTERNAL_SERVER_ERROR];
+    const errorPages: STATUS[] = [STATUS.UNAUTHORIZED, STATUS.FORBIDDEN, STATUS.NOT_FOUND, STATUS.INTERNAL_SERVER_ERROR];
     const resp: HttpErrorResponse = error as unknown as HttpErrorResponse;
   
     if (error.status == STATUS.UNAUTHORIZED) {
@@ -39,7 +40,6 @@ export const httpErrorHandlerInterceptor: HttpInterceptorFn = (req: HttpRequest<
   
     let body = {
       code: resp.error.code,
-      type: resp.error.type,
       message: resp.error.message,
       result: resp.error.result
     };

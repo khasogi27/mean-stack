@@ -1,85 +1,115 @@
 import { Request, Response } from 'express';
 import { userModel } from '@/models/user.model';
+import { IResponseJson, TResponseStatus } from '@/interfaces/response.interface';
 import { IUser } from '@/interfaces/user.interface';
-import { TRespStatus } from '@/interfaces/response.interface';
-import { asyncHandlerFix } from '@/utils/asyncHandler';
 
+export class UserController {
 
-export const userProfile = asyncHandlerFix(async (req: Request, res: Response) => {
-  try {
+  static userProfile(req: Request, res: Response): void {    
+    userModel.findOne({ userId: req.body['loggedInUser'].userId })
+      .then((user: IUser | null) => {
+        if (!user) {
+          res.status(403 as TResponseStatus).json({ 
+            code: 1,
+            message: "User not found", 
+          } as IResponseJson);
+        } else {
+          res.status(200 as TResponseStatus).json({ 
+            code: 0,
+            message: `User ${user.fullName}`, 
+            result: { datas: {
+              userId: user.userId, 
+              fullName: user.fullName, 
+              email: user.email, 
+              role: user.role, 
+            }}
+          } as IResponseJson);
+        }
+      }).catch((error: any) => {
+        res.status(401 as TResponseStatus).json({ code: 1, message: error.message } as IResponseJson);
+      });
+  };
+  
+  static usersList(req: Request, res: Response): void {
+    userModel.findOne({ userId: req.body['loggedInUser'].userId })
+      .then((user: IUser | null) => {
+        if (user?.role !== 'admin') {
+          res.status(403 as TResponseStatus).json({ 
+            code: 1,
+            message: "Unauthorized", 
+          } as IResponseJson);
+        } else {
+          userModel.find()
+            .then((values: IUser[] | null) => {
+              if (!values) {
+                res.status(403 as TResponseStatus).json({
+                  code: 1, 
+                  message: "Data not found", 
+                } as IResponseJson);
+              } else {
+                const updatedData = values.map(({ userId, fullName, email, role }) => ({ userId, fullName, email, role }));
+                res.status(200 as TResponseStatus).json({ 
+                  code: 0,
+                  message: "Users list", 
+                  result: { datas:  [...updatedData] }
+                } as IResponseJson);
+              }
+            });
+        }
+      }).catch((error: any) => {
+        res.status(401 as TResponseStatus).json({ code: 1, message: error.message } as IResponseJson);
+      });
+  }
+  
+  static removeUser (req: Request, res: Response): void {
     const reqParams = req.query;
-    const getUser: IUser | null = await userModel.findOne({ userId: reqParams.userId });
-
-    if (!getUser) {
-      return res.status(403 as TRespStatus).json({ 
-        code: 1,
-        message: "User not found", 
+    
+    userModel.findOne({ userId: req.body['loggedInUser'].userId })
+      .then((user: IUser | null) => {
+        if (user?.role !== 'admin') {
+          res.status(403 as TResponseStatus).json({ 
+            code: 1,
+            message: "Unauthorized", 
+          } as IResponseJson);
+        } else {
+          userModel.findOneAndDelete({ userId: reqParams.userId })
+            .then((value: IUser | null) => {
+              if (!value) { 
+                res.status(403 as TResponseStatus).json({
+                  code: 1, 
+                  message: "User not found", 
+                } as IResponseJson);
+              } else {
+                res.status(200 as TResponseStatus).json({ 
+                  code: 0,
+                  message: `Delete user ${user.fullName}`, 
+                } as IResponseJson);
+              }
+            });
+        }
+      }).catch((error: any) => {
+        res.status(412 as TResponseStatus).send({ code: 1, message: error.message } as IResponseJson);
       });
-    } else {
-      return res.status(200).json({ 
-        code: 0,
-        message: `User ${getUser.fullName}`, 
-        result: { datas: { 
-          userId: getUser.userId, 
-          fullName: getUser.fullName, 
-          role: getUser.role, 
-          email: getUser.email 
-        } }
-      });
-    }
-  } catch (error: any) {
-    return res.status(401).json({ 
-      code: 1,
-      message: error.message,
-    });
   }
-});
-
-export const usersList = asyncHandlerFix(async (req: Request, res: Response) => {
-  try {
-    const users = await userModel.find();
-
-    if (!users) {
-      return res.status(403).json({
-        code: 1, 
-        message: "Data not found", 
+  
+  static removeAllUser(req: Request, res: Response): void {
+    userModel.deleteMany({ role: 'client' })
+      .then((users: any) => {
+        if (users.deletedCount == 0) {
+          res.status(403 as TResponseStatus).json({
+            code: 1, 
+            message: "User not found", 
+          } as IResponseJson);
+        } else {
+          res.status(200 as TResponseStatus).json({ 
+            code: 0,
+            message: `Delete ${users.deletedCount} user`, 
+          } as IResponseJson);
+        }
+      }).catch((error: any) => {
+        res.status(412 as TResponseStatus).send({ code: 1, message: error.message } as IResponseJson);
       });
-    } else {
-      return res.status(200).json({ 
-        code: 0,
-        data: users, 
-        message: "Users list", 
-      });
-    }
-  } catch (error: any) {
-    return res.status(401).json({ 
-      code: 1,
-      message: error.message,
-    });
   }
-});
+  
+}
 
-export const removeUser = asyncHandlerFix(async (req: Request, res: Response) => {
-  const reqParams = req.params;
-
-  try {
-    const deleteUser = await userModel.findOneAndDelete({ userId: reqParams.userId });
-
-    if (!deleteUser) { 
-      return res.status(403).json({
-        code: 1, 
-        message: "User not found", 
-      });
-    } else {
-      return res.status(200).json({ 
-        code: 0,
-        message: `Delete user ${deleteUser.fullName}`, 
-      });
-    }
-  } catch (error: any) {
-    return res.status(412).send({ 
-      code: 1,
-      message: error.message,
-    });
-  }
-});

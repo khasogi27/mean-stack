@@ -1,14 +1,25 @@
-import { IResultErrUserJson, IUser } from './user.interface';
+import { IUser } from "./user.interface";
 
-interface IResultDataJson {
-  userId: string,
-  accessToken: string,
+export interface IProfile {
+  accessToken?: string;
+  userId: string;
+  fullName: string;
+  email: string;
+  role: string;
 }
 
-export interface IRespJson { 
-  code: 0 | 1, 
-  message: string, 
-  result?: { errors: IResultErrUserJson } | { datas: IResultDataJson | IUser } 
-};
+export interface IError {
+  email?: string[];
+  password?: string[];
+}
 
-export type TRespStatus = 200 | 201 | 403 | 412 | 401 | 500;
+export interface IResponseJson {
+  code: 0 | 1;
+  message: string;
+  result: {
+    datas?: IProfile | IUser[]
+    errors?: IError
+  }
+}
+
+export type TResponseStatus = 200 | 201 | 403 | 412 | 401 | 500;

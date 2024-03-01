@@ -1,13 +1,84 @@
-.fd-custom-container {
-  overflow: auto;
-  height: 90vh;
-  position: absolute;
+.tab-container {
+  height: 100%;
   width: 100%;
+  overflow: hidden;
+  position: absolute;
+  flex-direction: column;
 }
+
+.fd-tile__header {
+  height: 1.625rem;
+  margin-bottom: .25rem;
+  max-height: 1.625rem;
+  min-height: 1.625rem;
+}
+
+.fd-tile__content {
+  height: 5.875rem;
+  margin-bottom: .25rem;
+  max-height: 5.875rem;
+  min-height: 5.875rem;
+}
+
+// .fd-custom-container {
+//   overflow: auto;
+//   height: 90vh;
+//   position: absolute;
+//   width: 100%;
+// }
 
 .fd-custom-content {
   display: flex;
   gap: 1rem;
   padding: 0 0 1rem 0;
   flex-wrap: wrap;
+}
+
+.progress-wrapper {
+  position: relative;
+  display: flex;
+  justify-content: center;
+  margin: auto;
+  text-align: center;
+  align-content: center;
+  align-items: center;
+  width: 56px;
+  height: 56px;
+}
+
+.pie {
+  width: 56px;
+  background:#aab8ff;
+  border-radius: 50%;
+  transform: rotate(-90deg);
+}
+
+.pie circle {
+  animation: rotate 1.5s ease-in;
+}
+
+.progress-content {
+  font-size: 8px;
+  display: flex;
+  width: 100%;
+  height: 100%;
+  margin: auto;
+  justify-content: center;
+  position: absolute;
+  z-index: 1;
+}
+
+.progress-text {
+  display: flex;
+  margin: auto;
+  color: #000000;
+}
+
+circle {
+  stroke-linecap: butt;
+  transition: stroke-dashoffset 0.1s linear;
+}
+
+.control {
+  position: relative;
 }

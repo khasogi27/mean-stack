@@ -1,124 +1,313 @@
-<div class="fd-container fd-form-layout-grid-container fd-form-layout-grid-container--lg-vertical fd-form-layout-grid-container--xl-vertical">
-  <div class="fd-row">
-    <div class="fd-col fd-col-lg--6 fd-col--wrap fd-form-group">
-      <div class="fd-row fd-form-item">
-        <div class="fd-col fd-col-md--2">
-          <label class="fd-form-label" for="input-2-name">Name:</label>
-        </div>
-        <div class="fd-col fd-col-md--10">
-          <input class="fd-input" type="text" id="input-2-name" placeholder="Enter First and Last Name"
-            value="Amelia Perry">
-        </div>
+@if (!isProgress) {
+  <ng-container [ngTemplateOutlet]="contentPage"></ng-container>
+} @else {
+  <div class="progress-container">
+    <div class="progress-content">
+      <h2 class="fd-title fd-title--h2">In Progress</h2>
+      <div class="progress-wrapper">
+        <svg viewBox="0 0 64 64" class="pie">
+          <circle cx="50%" cy="50%" r="25%"
+            stroke-dashoffset="0" 
+            fill="none" stroke-width="32"
+            [attr.stroke-dasharray]="progressDasharray"
+            stroke="grey">
+          </circle>
+        </svg>
+        <div class="progress-text">{{ progress }}%</div>
       </div>
-
-      <div class="fd-row fd-form-item">
-        <div class="fd-col fd-col-md--2">
-          <label class="fd-form-label fd-form-label--required" for="input-2-street">Street/No.: </label>
-        </div>
-        <div class="fd-col fd-col-md--10">
-          <div class="fd-row">
-            <div class="fd-col fd-col--4">
-              <app-select-option [idKey]="id_key" [dataSource]="dsStreetSelect"></app-select-option>
-            </div>
-            <div class="fd-col fd-col--8">
-              <input class="fd-input" type="text" id="input-2-number" aria-label="Street Number"
-                placeholder="Enter Street Number" value="495">
+      <div class="progress-bar">
+        <div class="fd-progress-indicator fd-progress-indicator--{{ updateBarColor }}" tabindex="-1" role="progressbar">
+          <div class="fd-progress-indicator__remaining">
+            <span class="fd-progress-indicator__label">Table1 (10)</span>
+          </div>
+          <div class="fd-progress-indicator__container">
+            <div class="fd-progress-indicator__progress-bar" [style.min-width.%]="progress" [style.width]="progress">
+              <span class="fd-progress-indicator__label">{{ progress }}%</span>
             </div>
           </div>
         </div>
       </div>
+    </div>
+  </div>
+}
 
-      <div class="fd-row fd-form-item">
-        <div class="fd-col fd-col-md--2">
-          <label class="fd-form-label fd-form-label--required" for="input-2-zip">ZIP Code/City: </label>
+<ng-template #contentPage>
+  <main class="fd-page">
+    <header style="position: sticky; top: 0; width: 100%; z-index: 100;">
+      <div class="fd-bar fd-bar--page fd-bar--header">
+        <div class="fd-bar__left">
+          <div class="fd-bar__element">
+            Database Backup
+          </div>
         </div>
-        <div class="fd-col fd-col-md--10">
-          <div class="fd-row">
-            <div class="fd-col fd-col--8">
-              <input class="fd-input" type="text" id="input-2-zip" placeholder="Enter ZIP Code" value="43823">
-            </div>
-            <div class="fd-col fd-col--4">
-              <input class="fd-input" type="text" id="input-2-city" placeholder="Enter City" aria-label="City"
-                value="Downtown">
-            </div>
+        <div class="fd-bar__right">
+          <div class="fd-bar__element">
+            <button class="fd-button fd-button--transparent" aria-label="See more">
+              <i class="sap-icon--grid"></i>
+            </button>
           </div>
         </div>
       </div>
-
-      <div class="fd-row fd-form-item">
-        <div class="fd-col fd-col-md--2">
-          <label class="fd-form-label" for="input-2-country">Country:</label>
+    </header>
+    <div class="fd-page__content" role="region">
+      <div class="fd-container fd-form-layout-grid-container fd-form-layout-grid-container--lg-vertical fd-form-layout-grid-container--xl-vertical">
+        <div class="fd-row">
+          <div class="fd-col fd-col-lg--2 fd-col--wrap fd-form-group"></div>
+          <div class="fd-col fd-col-lg--4 fd-col--wrap fd-form-group">
+            <div class="fd-row fd-form-item">
+              <div class="fd-col fd-col-md--2">
+                <label class="fd-form-label" for="input-2-country">User:</label>
+              </div>
+              <div class="fd-col fd-col-md--10">
+                <div class="fd-popover" style="width:100%" cdkOverlayOrigin #user_overlay="cdkOverlayOrigin" (click)="hide_user_select = !hide_user_select">
+                  <div class="fd-popover__control">
+                    <div class="fd-select">
+                      <div aria-controls="h031XCM509" aria-expanded="false" aria-haspopup="listbox" class="fd-select__control"
+                        aria-label="Country" tabindex="0">
+                        <span class="fd-select__text-content">{{ selected_user }}</span>
+                        <span class="fd-button fd-button--transparent fd-select__button">
+                          <i class="sap-icon--slim-arrow-down"></i>
+                        </span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="fd-col fd-col-lg--4 fd-col--wrap fd-form-group">
+  
+            <div class="fd-row fd-form-item">
+              <div class="fd-col fd-col-md--2">
+                <label class="fd-form-label" for="input-2-country">Object Type:</label>
+              </div>
+              <div class="fd-col fd-col-md--10">
+                <div class="fd-popover" style="width:100%" cdkOverlayOrigin #object_overlay="cdkOverlayOrigin" (click)="hide_object_select = !hide_object_select">
+                  <div class="fd-popover__control">
+                    <div class="fd-select">
+                      <div aria-controls="h031XCM509" aria-expanded="false" aria-haspopup="listbox" class="fd-select__control"
+                        aria-label="Country" tabindex="0">
+                        <span class="fd-select__text-content">{{ selected_obj_type }}</span>
+                        <span class="fd-button fd-button--transparent fd-select__button">
+                          <i class="sap-icon--slim-arrow-down"></i>
+                        </span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="fd-col fd-col-lg--2 fd-col--wrap fd-form-group"></div>
         </div>
-        <div class="fd-col fd-col-md--10">
-          <div class="fd-popover" style="width:100%">
+      </div>
+      <!-- <div class="fd-container fd-form-layout-grid-container fd-form-group" style="max-width:1024px;">
+        <div class="fd-row fd-form-item">
+          <div class="fd-col fd-col-md--2">
+            <label class="fd-form-label" for="input-2-country">User:</label>
+          </div>
+          <div class="fd-popover">
             <div class="fd-popover__control">
-              <div class="fd-select">
-                <div aria-controls="h031XCM509" aria-expanded="false" aria-haspopup="listbox" class="fd-select__control"
-                  aria-label="Country" tabindex="0">
-                  <span class="fd-select__text-content">US</span>
+              <div class="fd-select" (click)="hide_user_select = !hide_user_select">
+                <div id="div_user_select"
+                  aria-controls="h031XCM509"
+                  aria-expanded="false"
+                  aria-haspopup="listbox"
+                  class="fd-select__control"
+                  aria-label="User"
+                  tabindex="0"
+                >
+                  <span id="span_user_select" class="fd-select__text-content">{{ selected_user }}</span>
                   <span class="fd-button fd-button--transparent fd-select__button">
                     <i class="sap-icon--slim-arrow-down"></i>
                   </span>
                 </div>
               </div>
             </div>
+            <div [attr.aria-hidden]="hide_user_select" class="fd-popover__body fd-popover__body--no-arrow fd-popover__body--dropdown">
+              <ul
+              aria-activedescendant="defaultSelectCombobox-currentlyFocusedItem"
+              aria-labelledby="cozySelectLabel"
+              class="fd-list fd-list--dropdown"
+              role="listbox">
+              @for (item of ds_users; track $index) {
+                <li
+                  id="defaultSelectCombobox-currentlyFocusedItem"
+                  class="fd-list__item"
+                  role="option"
+                  tabindex="0" (click)="on_user_selected(item['name'])">
+                    <span class="fd-list__title">{{ item['name'] }}</span>
+                </li>
+              }
+              </ul>
+            </div>
           </div>
         </div>
+        <div class="fd-row fd-form-item">
+          <div class="fd-col fd-col-md--2">
+            <label class="fd-form-label" for="input-2-country">Object Type:</label>
+          </div>
+          <div class="fd-popover">
+            <div class="fd-popover__control">
+              <div class="fd-select" (click)="hide_object_select = !hide_object_select">
+                <div
+                  aria-controls="h031XCM509"
+                  aria-expanded="false"
+                  aria-haspopup="listbox"
+                  class="fd-select__control"
+                  aria-label="Object Type"
+                  tabindex="0"
+                >
+                  <span class="fd-select__text-content">{{ selected_obj_type }}</span>
+                  <span class="fd-button fd-button--transparent fd-select__button">
+                    <i class="sap-icon--slim-arrow-down"></i>
+                  </span>
+                </div>
+              </div>
+            </div>
+            <div [attr.aria-hidden]="hide_object_select" class="fd-popover__body fd-popover__body--no-arrow fd-popover__body--dropdown">
+              <ul
+              aria-activedescendant="defaultSelectCombobox-currentlyFocusedItem"
+              aria-labelledby="cozySelectLabel"
+              class="fd-list fd-list--dropdown"
+              role="listbox">
+              @for (item of ds_object_types; track $index) {
+                <li
+                  id="defaultSelectCombobox-currentlyFocusedItem"
+                  class="fd-list__item"
+                  role="option"
+                  tabindex="0" (click)="on_object_type_selected(item)">
+                    <span class="fd-list__title">{{ item }}</span>
+                </li>
+              }
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div> -->
+      <div class="fd-padding-responsive--md fd-margin-top-bottom--md">
+        <div class="fd-toolbar fd-toolbar--title fd-toolbar-active">
+          <h4 class="fd-title fd-title--h4 fd-toolbar__title">Database Object</h4>
+          <span class="fd-toolbar__spacer fd-toolbar__spacer--auto"></span>
+        </div>
+        <table class="fd-table">
+          <thead class="fd-table__header">
+            <tr class="fd-table__row">
+              <th class="fd-table__cell" style="width: 32px;">
+                <!-- <fdl-checkbox
+                  (change)="$event ? toggleAllRows() : null"
+                  [checked]="selection.hasValue() && isAllSelected()"
+                  [indeterminate]="selection.hasValue() && !isAllSelected()">
+  
+                </fdl-checkbox> -->
+              </th>
+              <th class="fd-table__cell" scope="col" style="width:30%">Object Name</th>
+              <th class="fd-table__cell" scope="col" style="width: 10%">Object Type</th>
+              <th class="fd-table__cell" scope="col">Status</th>
+            </tr>
+          </thead>
+          <tbody class="fd-table__body">
+          @for (item of ds_filtered_objects; track $index) {
+            <tr class="fd-table__row">
+              <td class="fd-table__cell">
+                <!-- <fdl-checkbox
+                  (click)="$event.stopPropagation()"
+                  (change)="$event ? selection.toggle(item) : null"
+                  [checked]="selection.isSelected(item)">
+                </fdl-checkbox> -->
+              </td>
+              <td class="fd-table__cell">{{ item['name'] }}</td>
+              <td class="fd-table__cell"><span class="fd-table__text">{{ item['type'] }}</span></td>
+              <td class="fd-table__cell">
+                @if (item['status_type'] == 'text') {
+                <span class="fd-object-status fd-object-status--negative">
+                  <i class="fd-object-status__icon sap-icon--message-error" role="presentation"></i>
+                  <span class="fd-object-status__text">Highlight of Whole Row</span>
+                </span>
+                }
+                @else if (item['status_type'] == 'bar') {
+                <div class="fd-progress-indicator fd-progress-indicator--informative" tabindex="-1" role="progressbar">
+                  <!-- aria-valuemin="20" aria-valuenow="42" aria-valuemax="100" aria-valuetext="42%" aria-label="42%"> -->
+                  <div class="fd-progress-indicator__container">
+                    <div class="fd-progress-indicator__progress-bar" [style.width]="item['width']" [style.min-width]="item['width']"></div>
+                    <div class="fd-progress-indicator__remaining">
+                      <span class="fd-progress-indicator__label">
+                        {{ item['value'] }} of {{ item['max'] }} ({{ item['width']}})
+                      </span>
+                    </div>
+                  </div>
+                </div>
+                }
+              </td>
+            </tr>
+          }
+          </tbody>
+        </table>
       </div>
     </div>
-    <div class="fd-col fd-col-lg--6 fd-col--wrap fd-form-group">
-      <div class="fd-row fd-form-item">
-        <div class="fd-col fd-col-md--2">
-          <label class="fd-form-label" for="input-2-name">Name:</label>
-        </div>
-        <div class="fd-col fd-col-md--10">
-          <input class="fd-input" type="text" id="input-2-name" placeholder="Enter First and Last Name"
-            value="Amelia Perry">
-        </div>
-      </div>
-
-      <div class="fd-row fd-form-item">
-        <div class="fd-col fd-col-md--2">
-          <label class="fd-form-label fd-form-label--required" for="input-2-street">Street/No.: </label>
-        </div>
-        <div class="fd-col fd-col-md--10">
-          <div class="fd-row">
-            <div class="fd-col fd-col--4">
-              <input class="fd-input" type="text" id="input-2-zip" placeholder="Enter ZIP Code" value="43823">
-            </div>
-            <div class="fd-col fd-col--8">
-              <input class="fd-input" type="text" id="input-2-number" aria-label="Street Number"
-                placeholder="Enter Street Number" value="495">
-            </div>
+    <footer style="position: sticky; bottom: 0; width: 100%;">
+      <div class="fd-bar fd-bar--page fd-bar--footer">
+        <div class="fd-bar__right">
+          <div class="fd-bar__element">
+            <button class="fd-button fd-button--emphasized" (click)="refresh()">Refresh</button>
+          </div>
+          <div class="fd-bar__element">
+            <button class="fd-button fd-button--transparent" (click)="backup()">Backup</button>
+          </div>
+          <div class="fd-bar__element">
+            <button class="fd-button fd-button--transparent" (click)="show_text()">Text</button>
+          </div>
+          <div class="fd-bar__element">
+            <button class="fd-button fd-button--transparent" (click)="show_bar()">Bar</button>
           </div>
         </div>
       </div>
+    </footer>
+  </main>
+</ng-template>
 
-      <div class="fd-row fd-form-item">
-        <div class="fd-col fd-col-md--2">
-          <label class="fd-form-label fd-form-label--required" for="input-2-zip">ZIP Code/City: </label>
-        </div>
-        <div class="fd-col fd-col-md--10">
-          <div class="fd-row">
-            <div class="fd-col fd-col--8">
-              <input class="fd-input" type="text" id="input-2-zip" placeholder="Enter ZIP Code" value="43823">
-            </div>
-            <div class="fd-col fd-col--4">
-              <input class="fd-input" type="text" id="input-2-city" placeholder="Enter City" aria-label="City"
-                value="Downtown">
-            </div>
-          </div>
-        </div>
-      </div>
+<ng-template cdkConnectedOverlay [cdkConnectedOverlayOrigin]="contentPage.elementRef.nativeElement.user_overlay"
+[cdkConnectedOverlayOpen]="!hide_user_select">
+<ng-container [ngTemplateOutlet]="select_user_overlay"></ng-container>
+</ng-template>
 
-      <div class="fd-row fd-form-item">
-        <div class="fd-col fd-col-md--2">
-          <label class="fd-form-label" for="input-2-country">Country:</label>
-        </div>
-        <div class="fd-col fd-col-md--10">
-          <app-select-option [idKey]="id_key" [dataSource]="dsCountrySelect"></app-select-option>
-        </div>
-      </div>
-    </div>
-  </div>
+<ng-template #select_user_overlay>
+<div aria-hidden="false" class="fd-popover__body fd-popover__body--no-arrow fd-popover__body--dropdown"
+  id="h0C6A325b">
+  <ul aria-activedescendant="defaultSelectCombobox-currentlyFocusedItem" aria-labelledby="cozySelectLabel"
+    class="fd-list fd-list--dropdown" role="listbox">
+    @for (item of ds_users; track $index) {
+      <li
+        id="defaultSelectCombobox-currentlyFocusedItem"
+        class="fd-list__item"
+        role="option"
+        tabindex="0" (click)="on_user_selected(item['name'])">
+          <span class="fd-list__title">{{ item['name'] }}</span>
+      </li>
+    }
+  </ul>
 </div>
+</ng-template>
+
+<ng-template cdkConnectedOverlay [cdkConnectedOverlayOrigin]="contentPage.elementRef.nativeElement.object_overlay"
+[cdkConnectedOverlayOpen]="!hide_object_select">
+<ng-container [ngTemplateOutlet]="select_object_overlay"></ng-container>
+</ng-template>
+
+<ng-template #select_object_overlay>
+<div aria-hidden="false" class="fd-popover__body fd-popover__body--no-arrow fd-popover__body--dropdown"
+  id="h0C6A325b">
+  <ul aria-activedescendant="defaultSelectCombobox-currentlyFocusedItem" aria-labelledby="cozySelectLabel"
+    class="fd-list fd-list--dropdown" role="listbox">
+    @for (item of ds_object_types; track $index) {
+      <li
+        id="defaultSelectCombobox-currentlyFocusedItem"
+        class="fd-list__item"
+        role="option"
+        tabindex="0" (click)="on_object_type_selected(item)">
+          <span class="fd-list__title">{{ item }}</span>
+      </li>
+    }
+  </ul>
+</div>
+</ng-template>

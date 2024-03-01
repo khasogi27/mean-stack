@@ -1,12 +1,8 @@
 import { Component, HostListener, inject } from '@angular/core';
-import { AuthService, PostResponse } from '../../core/auth.service';
+import { AuthService } from '../../core/auth.service';
 import { FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { RouterModule } from '@angular/router';
-
-export interface IUserLogin {
-  email: string;
-  password: string;
-}
+import { IError, IPostResponse } from '../../shared/interfaces/response';
 
 
 @Component({
@@ -17,29 +13,36 @@ export interface IUserLogin {
   styleUrl: './login.component.scss'
 })
 export class LoginComponent {
-  public arrError: { email?: string, password?: string } = { email: '', password: '' };
+  public arrError: IError = { email: '', password: '' };
   public isPassword: boolean = true;
-  public _authSvc = inject(AuthService);
+  public _authSvc: AuthService = inject(AuthService);
   
   public formLogin: FormGroup = new FormGroup({
     email: new FormControl(''),
     password: new FormControl('')
   });
 
-  get passwordVisible () {
+  get passwordVisible (): boolean {
     return this.formLogin.controls['password'].value != '';
   }
 
   @HostListener('document:keydown.enter') 
-  onSubmit() {
+  onSubmit(): void {
     const formData = this.formLogin.value;
-    this._authSvc.login(formData).subscribe((resp: PostResponse) => {
-      if (resp.code != 0) {
-        const { email, password } = resp.result?.errors!;
-        this.arrError = { email: email ? email : '', password: password ? password : '' };
-        return;
-      }
-      console.log(resp, 'result onSubmit');
-    });
+    this._authSvc.login(formData)
+      .subscribe((resp: IPostResponse) => {
+        if (resp.code != 0) {
+          const getError = resp.result.errors;
+          console.log(getError, 'getError');
+          if (getError) {
+            // this.arrError = { 
+            //   email: getError.email ? getError.email[0] : '', 
+            //   password: getError.password ? getError.password[0] : ''
+            // }
+          }
+          return;
+        }
+        console.log(resp, 'result login onSubmit');
+      });
   }
 }

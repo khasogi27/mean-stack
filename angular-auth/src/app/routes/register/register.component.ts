@@ -1,11 +1,8 @@
 import { Component } from '@angular/core';
 import { FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
-import { IUserLogin, LoginComponent } from '../login/login.component';
+import { LoginComponent } from '../login/login.component';
 import { RouterModule } from '@angular/router';
-
-export interface IUserRegister extends IUserLogin {
-  fullname: string;
-}
+import { IPostResponse } from '../../shared/interfaces/response';
 
 @Component({
   selector: 'app-register',
@@ -27,7 +24,15 @@ export class RegisterComponent extends LoginComponent {
 
   override onSubmit(): void {
     const formData = this.formRegister.value;
-    this._authSvc.register(formData);
+    this._authSvc.register(formData)
+      .subscribe((resp: IPostResponse) => {
+        console.log(resp.code, 'resp.code');
+        if (resp.code != 0) {
+          console.log(resp.result.errors);
+          return;
+        }
+        console.log(resp, 'result register onSubmit');
+      });
   }
 }
 

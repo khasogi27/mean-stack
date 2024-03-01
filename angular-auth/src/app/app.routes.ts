@@ -1,6 +1,6 @@
 import { Routes } from '@angular/router';
 import { authGuard } from './core/auth.guard';
-import { LayoutComponent } from './routes/layout/layout.component';
+import { LayoutComponent } from './layout/layout.component';
 
 export const routes: Routes = [
   {
@@ -17,6 +17,10 @@ export const routes: Routes = [
       {
         path: 'dashboard',
         loadComponent: () => import('./routes/dashboard/dashboard.component').then(c => c.DashboardComponent),
+      },
+      {
+        path: 'user',
+        loadComponent: () => import('./routes/user/user.component').then(c => c.UserComponent),
       },
       {
         path: 'data-base',
@@ -38,6 +42,6 @@ export const routes: Routes = [
   },
   {
     path: '**',
-    redirectTo: 'dashboard:quu:'
+    redirectTo: 'dashboard'
   }
 ];

@@ -14,18 +14,67 @@
 </div>
 
 <section role="tabpanel" class="fd-icon-tab-bar__panel">
-  <div class="fd-custom-container">
+  <div class="tab-container">
     <div fd-scrollbar class="fd-padding fd-padding-begin-end--lg">
       <div id="home" class="fd-margin-bottom--lg">
         <h2 class="fd-margin-top-bottom--sm">Quick Access</h2>
-        <h3 class="fd-margin-top-bottom--sm">Monitoring</h3>
-        
+
+        <h3 class="fd-margin-top-bottom--sm">{{ getToday | titlecase }}</h3>
         <div class="fd-custom-content">
-          
           <div role="button" tabindex="0" class="fd-tile fd-tile--launch"
             routerLink="/data-base">
+            <div class="fd-tile__header">
+              <div class="fd-tile__title">Backup</div>
+            </div>
+            <div class="fd-tile__content">
+              <span class="fd-tile__profile-img" style="margin: auto;">
+                <div class="progress-wrapper">
+                  <svg viewBox="0 0 64 64" class="pie">
+                    <circle cx="50%" cy="50%" r="25%"
+                      stroke-dashoffset="0" 
+                      fill="none" stroke-width="32"
+                      [attr.stroke-dasharray]="progressDasharray"
+                      stroke="grey">
+                    </circle>
+                  </svg>
+                </div>
+              </span>
+            </div>
+            <div class="fd-tile__footer" style="justify-content: center;">
+              <span class="fd-tile__footer-text">{{ progress }}%</span>
+            </div>
+          </div>
+          <div role="button" tabindex="1" class="fd-tile fd-tile--launch"
+            routerLink="/data-base">
+            <div class="fd-tile__header">
+              <div class="fd-tile__title">Restore</div>
+            </div>
+            <div class="fd-tile__content">
+              <span class="fd-tile__profile-img" style="margin: auto;">
+                <div class="progress-wrapper">
+                  <svg viewBox="0 0 64 64" class="pie">
+                    <circle cx="50%" cy="50%" r="25%"
+                      stroke-dashoffset="0" 
+                      fill="none" stroke-width="32"
+                      [attr.stroke-dasharray]="progressDasharray"
+                      stroke="grey">
+                    </circle>
+                  </svg>
+                </div>
+              </span>
+            </div>
+            <div class="fd-tile__footer" style="justify-content: center;">
+              <span class="fd-tile__footer-text">{{ progress }}%</span>
+            </div>
+          </div>
+        </div>
+
+        <h3 class="fd-margin-top-bottom--sm">Demo</h3>
+        <div class="fd-custom-content">
+          <div role="button" tabindex="0" class="fd-tile fd-tile--launch"
+            routerLink="/user">
             <div class="fd-tile__header-content">
-              <div class="fd-tile__title">Data Base</div>
+              <div class="fd-tile__title">User</div>
               <div class="fd-tile__subtitle">Subtitle</div>
             </div>
             <div class="fd-tile__footer fd-tile__footer--2-col">
@@ -36,8 +85,7 @@
               <div class="fd-tile__section"><span class="fd-tile__footer-text">Footer</span></div>
             </div>
           </div>
-      
-          <div role="button" tabindex="0" class="fd-tile fd-tile--launch"
+          <div role="button" tabindex="1" class="fd-tile fd-tile--launch"
             routerLink="/job-schedule">
             <div class="fd-tile__header-content">
               <div class="fd-tile__title">Job Schedule</div>
@@ -51,8 +99,8 @@
               <div class="fd-tile__section"><span class="fd-tile__footer-text">Footer</span></div>
             </div>
           </div>
-      
         </div>
+
       </div>
     </div>
   </div>

@@ -1,42 +1,39 @@
 import { Request, Response, NextFunction } from 'express';
-import { IRespJson, TRespStatus } from '@/interfaces/response.interface';
-import { asyncHandlerFix, validator } from '@/utils/index.util';
+import { IResponseJson, TResponseStatus } from '@/interfaces/response.interface';
+import { validator } from '@/utils/index.util';
 
-export const registerValidation = asyncHandlerFix(async (req: Request, res: Response, next: NextFunction) => {
-  const validateRule = {
-    "fullName": "required|string|min:3",
-    "email": "required|email",
-    "password": "required|min:6",
+
+export class AuthValidation {
+  
+  static registerValidation(req: Request, res: Response, next: NextFunction): void {
+    const validateRule = {
+      "fullName": "required|string|min:3",
+      "email": "required|email",
+      "password": "required|min:6",
+    };
+  
+    validator(req.body, validateRule, {}, (err: any, status: any) => {
+      if (!status) {
+        res.status(412 as TResponseStatus).send({ code: 1, message: 'Validation failed', result: err } as IResponseJson);
+      } else {
+        next();
+      }
+    }).catch(err => console.log(err));
+  };
+  
+  static loginValidation(req: Request, res: Response, next: NextFunction): void {
+    const validateRule = {
+      "email": "required|email", 
+      "password":"required|min:6",
+    }
+  
+    validator(req.body, validateRule, {}, (err: any, status: any) => {
+      if (!status) {
+        res.status(412 as TResponseStatus).send({ code: 1, message: 'Validation failed', result: err } as IResponseJson);
+      } else {
+        next();
+      }
+    }).catch(err => console.log(err));
   };
 
-  await validator(req.body, validateRule, {}, (err: any, status: any) => {
-    if (!status) {
-      res.status(412 as TRespStatus).send({
-        code: 1,
-        message: 'Validation failed',
-        data: err
-      } as IRespJson);
-    } else {
-      next();
-    }
-  }).catch(err => console.log(err));
-});
-
-export const loginValidation = asyncHandlerFix(async (req: Request, res: Response, next: NextFunction) => {
-  const validateRule = {
-    "email": "required|email", 
-    "password":"required|min:6",
-  }
-
-  await validator(req.body, validateRule, {}, (err: any, status: any) => {
-    if (!status) {
-      res.status(412 as TRespStatus).send({
-        code: 1,
-        message: 'Validation failed',
-        result: err
-      } as IRespJson);
-    } else {
-      next();
-    }
-  }).catch(err => console.log(err));
-});
+}

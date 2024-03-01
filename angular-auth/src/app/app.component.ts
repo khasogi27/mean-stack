@@ -6,9 +6,11 @@ import { RouterOutlet } from '@angular/router';
   standalone: true,
   imports: [RouterOutlet],
   template: `
-    <div class="is-compact">
+    <div [class]="contentSize">
       <router-outlet></router-outlet>
     </div>
     `
 })
-export class AppComponent {}
+export class AppComponent {
+  public contentSize: string = 'is-compact';
+}
