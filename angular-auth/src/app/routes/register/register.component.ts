@@ -2,12 +2,13 @@ import { Component } from '@angular/core';
 import { FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { LoginComponent } from '../login/login.component';
 import { RouterModule } from '@angular/router';
-import { IPostResponse } from '../../shared/interfaces/response';
+import { IError, IPostResponse } from '../../shared/interfaces/response';
+import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-register',
   standalone: true,
-  imports: [ReactiveFormsModule, RouterModule],
+  imports: [CommonModule, ReactiveFormsModule, RouterModule],
   templateUrl: './register.component.html',
   styleUrl: './register.component.scss'
 })
@@ -17,6 +18,7 @@ export class RegisterComponent extends LoginComponent {
     fullName: new FormControl(''),
     ...this.formLogin.controls
   });
+  public override arrError: IError = { fullName: '', email: '', password: '' };
 
   override get passwordVisible(): boolean {
     return this.formRegister.controls['password'].value != '';
@@ -28,7 +30,15 @@ export class RegisterComponent extends LoginComponent {
       .subscribe((resp: IPostResponse) => {
         console.log(resp.code, 'resp.code');
         if (resp.code != 0) {
-          console.log(resp.result.errors);
+          const getError = resp.result.errors;
+          console.log(getError, 'getError');
+          if (getError) {
+            this.arrError = { 
+              fullName: getError.fullName ? getError.fullName[0] : '',
+              email: getError.email ? getError.email[0] : '',
+              password: getError.password ? getError.password[0] : ''
+            }
+          }
           return;
         }
         console.log(resp, 'result register onSubmit');

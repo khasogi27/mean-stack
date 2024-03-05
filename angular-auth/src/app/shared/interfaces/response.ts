@@ -11,6 +11,7 @@ export interface IUser extends IProfile {
 }
 
 export interface IError {
+  fullName?: string,
   email?: string;
   password?: string;
 }

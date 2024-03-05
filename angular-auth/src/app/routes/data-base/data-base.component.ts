@@ -27,7 +27,14 @@ export class DataBaseComponent implements AfterViewInit {
   public isProgress: boolean = false;
   public progress: number = 0;
 
-  constructor(private http: HttpClient) {}
+  public mainWidth: number = 65;
+  public sideWidth: number = 35;
+
+  public isNewBackup: boolean = false;
+
+  constructor(private http: HttpClient) {
+    this.onToggleSideContent();
+  }
 
   ngAfterViewInit(): void {
     // this.refresh();
@@ -91,13 +98,18 @@ export class DataBaseComponent implements AfterViewInit {
     this.selected_user = '';
 
     // this.http.get<ApiResponse>(environment.api_server + '/target/users')
-    this.http.get<any>(environment.api_service + '/target/users')
-    .subscribe(resp => {
-      if (resp.code != 0) {
-        return;
-      }
-      this.ds_users = resp.data;
-    });
+    // .subscribe(resp => {
+    //   if (resp.code != 0) {
+    //     return;
+    //   }
+    //   this.ds_users = resp.data;
+    // });
+
+    this.isNewBackup = false;
+    for (let i = 0; i < 50; i++) {
+      this.ds_filtered_objects.push({ name: 'db1', type: 'type1', status_type: 'text', value: 10, max: 100, width: 100 });
+    }
+    this.onToggleSideContent();
   }
 
   isAllSelected() {
@@ -126,7 +138,7 @@ export class DataBaseComponent implements AfterViewInit {
     //   }
     // });
 
-    this.isProgress = true;
+    this.isProgress = !this.isProgress;
     setInterval(() => {
       if (this.progress < 100) {
         this.progress++;
@@ -158,8 +170,38 @@ export class DataBaseComponent implements AfterViewInit {
     }
   }
 
+  new() {
+    this.isNewBackup = !this.isNewBackup;
+    for (let i = 0; i < 50; i++) {
+      this.ds_filtered_objects.push({ name: 'db1', type: 'type1', status_type: 'text', value: 10, max: 100, width: 100 });
+    }
+    this.onToggleSideContent();
+  }
+
+  clear() {
+    this.ds_filtered_objects = [];  
+    this.onToggleSideContent();
+  }
+
+  onToggleSideContent() {
+    if (this.ds_filtered_objects.length != 0) {
+      if (this.mainWidth === 65) {
+        this.sideWidth = this.mainWidth = 50;
+      } else  {
+        this.sideWidth = 35;
+        this.mainWidth = 65;
+      }
+    } else {
+      this.sideWidth = 100;
+    }
+  }
+
   get progressDasharray(): string {
     return this.progress + ' '  + (100 - this.progress);
+  }
+
+  get iconSeparator(): string {
+    return this.mainWidth === 65 ? 'sap-icon--slim-arrow-left' : 'sap-icon--slim-arrow-right';
   }
 
   get updateBarColor(): 'positive' | 'informative' | 'critical' {
