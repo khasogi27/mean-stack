@@ -29,6 +29,14 @@ export const routes: Routes = [
       {
         path: 'job-schedule',
         loadComponent: () => import('./routes/job-schedule/job-schedule.component').then(c => c.JobScheduleComponent)
+      },
+      {
+        path: 'subscription',
+        loadComponent: () => import('./routes/subsc/subsc.component').then(c => c.SubscComponent)
+      },
+      {
+        path: 'local-loop',
+        loadComponent: () => import('./routes/local-loop/local-loop.component').then(c => c.LocalLoopComponent)
       }
     ]
   },

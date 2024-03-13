@@ -6,5 +6,7 @@ const router = Router();
 
 router.post('/register', AuthValidation.registerValidation, AuthController.register);
 router.post('/login', AuthValidation.loginValidation, AuthController.login);
+router.post('/reset', AuthController.resetPassword);
+router.post('/passcode', AuthController.sendPasscode);
 
 export default router;

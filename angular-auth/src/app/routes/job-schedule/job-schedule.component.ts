@@ -1,4 +1,4 @@
-import { TitleCasePipe } from '@angular/common';
+import { CommonModule, TitleCasePipe } from '@angular/common';
 import { Component } from '@angular/core';
 
 type TOccursFreq = 'daily' | 'weekly' | 'monthly';
@@ -10,7 +10,7 @@ type TDurationDate = 'no end date' | 'end date';
 @Component({
   selector: 'app-job-schedule',
   standalone: true,
-  imports: [TitleCasePipe],
+  imports: [TitleCasePipe, CommonModule],
   templateUrl: './job-schedule.component.html',
   styleUrl: './job-schedule.component.scss'
 })
@@ -46,4 +46,34 @@ export class JobScheduleComponent {
   ]
 
   constructor() {}
+
+  public occursFreqClick(name: any): void {
+    for (let select of this.occursFreqOpt) {
+      if (select.id == name.value) this.occursFreqSelect = select.name;
+    }
+  }
+
+  public recursFreqClick(name: any): void {
+    for (let select of this.recursFreqOpt) {
+      if (select.id == name.value) this.recursFreqSelect = select.name;
+    }
+  }
+
+  public occursDailylClick(name: any): void {
+    for (let select of this.occursDailylOpt) {
+      if (select.id == name.value) this.occursDailySelect= select.name;
+    }
+  }
+
+  public occursEverylClick(name: any): void {
+    for (let select of this.occursEverylOpt) {
+      if (select.id == name.value) this.occursEverySelect = select.name;
+    }
+  }
+
+  public durationDateClick(name: any): void {
+    for (let select of this.durationDateOpt) {
+      if (select.id == name.value) this.durationDateSelect = select.name;
+    }
+  }
 }

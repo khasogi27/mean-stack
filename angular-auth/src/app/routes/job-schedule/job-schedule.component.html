@@ -1,21 +1,21 @@
-<section class="fd-dynamic-page fd-dynamic-page--xl" aria-label="Dynamic Page Expandable Example"
-  xmlns="http://www.w3.org/1999/html">
-
-  <header class="fd-dynamic-page__header">
-    <div class="fd-dynamic-page__title-area " tabindex="0">
-      <div class="fd-dynamic-page__main-container">
-        <div class="fd-dynamic-page__breadcrumb-title-container">
-          <div class="fd-dynamic-page__title-container">
-            <h3 class="fd-title fd-title--h3">New Job Schedule</h3>
+<div class="main-container">
+  <div class="content-sticky fd-margin-begin-end--sm" style="background-color: white;">
+    <div class="fd-container fd-form-layout-grid-container">
+      <div class="fd-row">
+        <div class="fd-col fd-col-lg--12 fd-col--wrap fd-form-group">
+          <div class="fd-row fd-form-item">
+            <div class="fd-col">
+              <h2 class="fd-title fd-title--h2">Job Schedule</h2>
+            </div>
           </div>
         </div>
       </div>
     </div>
-  </header>
-
-  <div class="fd-dynamic-page__content">
-    <div class="fd-container fd-form-layout-grid-container fd-form-layout-grid-container--lg-vertical fd-form-layout-grid-container--xl-vertical">
-    
+  </div>
+  
+  <div class="fd-padding-responsive--sm fd-margin-top-bottom--sm">
+    <div class="fd-container fd-form-layout-grid-container">
+      
       <div class="fd-row">
         <div class="fd-form-header fd-margin-top-bottom--sm">
           <span class="fd-form-header__text">Frequency</span>
@@ -26,9 +26,9 @@
             <label class="fd-form-label" for="input-2-name">Occurs:</label>
           </div>
           <div class="fd-col fd-col-md--2">
-            <select class="fd-input">
+            <select class="fd-input" (change)="occursFreqClick($event.target)">
               @for (item of occursFreqOpt; track item) {
-                <option [value]="item.id" (click)="occursFreqSelect = item.name">{{ item.name | titlecase }}</option>
+                <option [value]="item.id">{{ item.name | titlecase }}</option>
               }
             </select>
           </div>
@@ -39,9 +39,9 @@
               <label class="fd-form-label" for="input-2-name">Recurs type:</label>
             </div>
             <div class="fd-col fd-col-md--2">
-              <select class="fd-input">
+              <select class="fd-input" (change)="recursFreqClick($event.target)">
                 @for (item of recursFreqOpt; track item) {
-                  <option [value]="item.id" (click)="recursFreqSelect = item.name">{{ item.name | titlecase }}</option>
+                  <option [value]="item.id">{{ item.name | titlecase }}</option>
                 }
               </select>
             </div>
@@ -182,7 +182,7 @@
           }
         }
       </div>
-
+      
       <div class="fd-row">
         <div class="fd-form-header fd-margin-top-bottom--sm">
           <span class="fd-form-header__text">Daily frequency</span>
@@ -193,14 +193,14 @@
             <label class="fd-form-label" for="input-2-name">Occurs type:</label>
           </div>
           <div class="fd-col fd-col-md--2">
-            <select class="fd-input">
+            <select class="fd-input" (change)="occursDailylClick($event.target)">
               @for (item of occursDailylOpt; track item) {
-                <option [value]="item.id" (click)="occursDailySelect = item.name">{{ item.name | titlecase }}</option>
+                <option [value]="item.id">{{ item.name | titlecase }}</option>
               }
             </select>
           </div>
         </div>
-
+      
         @switch (occursDailySelect) {
           @case ('once') {
             <div class="fd-row fd-form-item">
@@ -221,9 +221,9 @@
                 <input class="fd-input" type="number" id="input-2-name">
               </div>
               <div class="fd-col fd-col-md--1">
-                <select class="fd-input">
+                <select class="fd-input" (change)="occursEverylClick($event.target)">
                   @for (item of occursEverylOpt; track item) {
-                    <option [value]="item.id" (click)="occursEverySelect = item.name">{{ item.name | titlecase }}</option>
+                    <option [value]="item.id">{{ item.name | titlecase }}</option>
                   }
                 </select>
               </div>
@@ -243,12 +243,12 @@
           }
         }
       </div>
-
+      
       <div class="fd-row">
         <div class="fd-form-header fd-margin-top-bottom--sm">
           <span class="fd-form-header__text">Duration</span>
         </div>
-
+      
         <div class="fd-row fd-form-item">
           <div class="fd-col fd-col-md--2">
             <label class="fd-form-label" for="input-2-name">Start date:</label>
@@ -257,15 +257,15 @@
             <input class="fd-input" type="date" id="input-2-name">
           </div>
         </div>
-
+      
         <div class="fd-row fd-form-item">
           <div class="fd-col fd-col-md--2">
             <label class="fd-form-label" for="input-2-name">End date:</label>
           </div>
           <div class="fd-col fd-col-md--2">
-            <select class="fd-input">
+            <select class="fd-input"  (change)="durationDateClick($event.target)">
               @for (item of durationDateOpt; track item) {
-                <option [value]="item.id" (click)="durationDateSelect = item.name">{{ item.name | titlecase }}</option>
+                <option [value]="item.id">{{ item.name | titlecase }}</option>
               }
             </select>
           </div>
@@ -275,24 +275,24 @@
             </div>
           }
         </div>
-
+      
       </div>
-
+      
       <div class="fd-row">
         <div class="fd-form-header fd-margin-top-bottom--sm">
           <span class="fd-form-header__text">Summary</span>
         </div>
-
+      
         <div class="fd-row fd-form-item">
           <div class="fd-col fd-col-md--2">
             <label class="fd-form-label" for="input-2-name">Description:</label>
           </div>
-          <div class="fd-col fd-col-md--8">
+          <div class="fd-col fd-col-md--6">
             <textarea class="fd-textarea" id="textarea-1"></textarea>
           </div>
         </div>
       </div>
-    
+
     </div>
   </div>
-</section>
+</div>

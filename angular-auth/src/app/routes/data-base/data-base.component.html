@@ -1,47 +1,202 @@
-<div class="fd-flexible-column-layout flexible-column-layout-container">
+<!-- <div class="fd-flexible-column-layout">
   <div class="fd-flexible-column-layout__column" [style.width.%]="sideWidth">
-    <ng-container [ngTemplateOutlet]="sidePage"></ng-container>
+    <ng-container [ngTemplateOutlet]="mainPage"></ng-container>
   </div>
-  @if (ds_filtered_objects.length != 0) {
-    <!-- <div class="fd-flexible-column-layout__separator" style="position: fixed; top: 50%;"
-      [style.left.%]="sideWidth">
-      <button class="fd-button fd-button--transparent fd-flexible-column-layout__button" 
-        (click)="onToggleSideContent()">
-        <i [class]="iconSeparator" role="presentation"></i>
-      </button>
-    </div> -->
+  @if (isSidepage) {
     <div class="fd-flexible-column-layout__column" [style.width.%]="mainWidth">
-      <ng-container [ngTemplateOutlet]="mainPage"></ng-container>  
+      <ng-container [ngTemplateOutlet]="sidePage"></ng-container>  
+    </div>
+  }
+</div> -->
+
+<div class="fd-dynamic-side" [class]="mobileMode ? 'fd-dynamic-side--below' : 'fd-dynamic-side--equal-split'">
+  <div class="fd-dynamic-side__main">
+    <ng-container [ngTemplateOutlet]="mainPage"></ng-container>
+  </div>
+  @if (isSidepage) {
+    <div class="fd-dynamic-side__side">
+      <ng-container [ngTemplateOutlet]="sidePage"></ng-container>  
     </div>
   }
 </div>
 
 <ng-template #mainPage>
+  <div class="side-container">
+    <div class="content-sticky fd-margin-begin-end--sm" style="background-color: white;">
+      <div class="fd-container fd-form-layout-grid-container">
+        <div class="fd-row">
+          <div class="fd-col fd-col-lg--12 fd-col--wrap fd-form-group">
+            <div class="fd-row fd-form-item">
+              <div class="fd-col-md--12 fd-margin-bottom--sm">
+                <h2 class="fd-title fd-title--h2">Database</h2>
+              </div>
+              <div class="fd-col fd-col-lg--6">
+                <div class="fd-row fd-form-item">
+                  <div class="fd-col fd-col--12">
+                    <label class="fd-form-label" for="input-2-country">User:</label>
+                  </div>
+                  <div class="fd-col fd-col-md--12 fd-col-lg-6">
+                    <div class="fd-popover" style="width:100%" cdkOverlayOrigin #user_side_overlay="cdkOverlayOrigin" (click)="hide_user_select = !hide_user_select">
+                      <div class="fd-popover__control">
+                        <div class="fd-select">
+                          <div aria-controls="h031XCM509" aria-expanded="false" aria-haspopup="listbox" class="fd-select__control"
+                          aria-label="Country" tabindex="0">
+                          <span class="fd-select__text-content">{{ selected_user }}</span>
+                          <span class="fd-button fd-button--transparent fd-select__button">
+                            <i class="sap-icon--slim-arrow-down"></i>
+                          </span>
+                        </div>
+                      </div>
+                    </div>
+                    <ng-template cdkConnectedOverlay [cdkConnectedOverlayOrigin]="user_side_overlay"
+                      [cdkConnectedOverlayOpen]="!hide_user_select">
+                      <ng-container [ngTemplateOutlet]="select_user_overlay" 
+                        [ngTemplateOutletContext]="{ $implicit: 'mainSelect' }">
+                      </ng-container>
+                    </ng-template>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="fd-col fd-col-lg--6">
+                <div class="fd-row fd-form-item">
+                  <div class="fd-col fd-col--6">
+                    <label class="fd-form-label" for="input-2-country">Start Date:</label>
+                  </div>
+                  <div class="fd-col fd-col--6">
+                    <label class="fd-form-label" for="input-2-country">End Date:</label>
+                  </div>
+                  <div class="fd-col fd-col-md--12 fd-col-lg--6">
+                    <div class="fd-input-group">
+                      <input class="fd-input fd-input-group__input" type="date">
+                    </div>
+                  </div>
+                  <div class="fd-col fd-col-md--12 fd-col-lg--6">
+                    <div class="fd-input-group">
+                      <input class="fd-input fd-input-group__input" type="date">
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="fd-padding-responsive--sm fd-margin-top-bottom--sm">
+      <div class="fd-toolbar fd-toolbar--title" role="toolbar">
+        <h4 class="fd-title fd-title--h4 fd-toolbar__title">Database Name ({{ ds_users.length }})</h4>
+        <span class="fd-toolbar__spacer"></span>
+        <button class="fd-button fd-button--transparent" (click)="newBackup()">New</button>
+        <button class="fd-button fd-button--transparent" (click)="clear()">Clear</button>
+        <button class="fd-button fd-button--transparent" title="Refresh" (click)="refresh()">
+          <i class="sap-icon--refresh"></i>
+        </button>
+      </div>
+      <table class="fd-table">
+        <thead class="fd-table__header">
+          <tr class="fd-table__row">
+            <!-- <th class="fd-table__cell" style="width: 32px;">
+              <fdl-checkbox
+                (change)="$event ? toggleAllRows() : null"
+                [checked]="selection.hasValue() && isAllSelected()"
+                [indeterminate]="selection.hasValue() && !isAllSelected()">
+    
+              </fdl-checkbox>
+            </th> -->
+            <th class="fd-table__cell" scope="col" style="width:30%">Name</th>
+            <th class="fd-table__cell" scope="col">Start</th>
+            <th class="fd-table__cell" scope="col">End</th>
+            <th class="fd-table__cell" scope="col">Status</th>
+          </tr>
+        </thead>
+        <tbody class="fd-table__body">
+        @for (item of ds_filtered_objects; track $index) {
+          <tr class="fd-table__row">
+            <!-- <td class="fd-table__cell">
+              <fdl-checkbox
+                (click)="$event.stopPropagation()"
+                (change)="$event ? selection.toggle(item) : null"
+                [checked]="selection.isSelected(item)">
+              </fdl-checkbox>
+            </td> -->
+            <td class="fd-table__cell">{{ item['name'] }}</td>
+            <td class="fd-table__cell">
+              <span class="fd-table__text">{{ item['start'] }}</span>
+            </td>
+            <td class="fd-table__cell">
+              <span class="fd-table__text">{{ item['end'] }}</span>
+            </td>
+            <td class="fd-table__cell">
+              @if (item['status_type'] == 'text') {
+              <span class="fd-object-status fd-object-status--negative">
+                <i class="fd-object-status__icon sap-icon--message-error" role="presentation"></i>
+                <span class="fd-object-status__text">Highlight of Whole Row</span>
+              </span>
+              }
+              @else if (item['status_type'] == 'bar') {
+              <div class="fd-progress-indicator fd-progress-indicator--informative" tabindex="-1" role="progressbar">
+                <!-- aria-valuemin="20" aria-valuenow="42" aria-valuemax="100" aria-valuetext="42%" aria-label="42%"> -->
+                <div class="fd-progress-indicator__container">
+                  <div class="fd-progress-indicator__progress-bar" [style.width]="item['width']" [style.min-width]="item['width']"></div>
+                  <div class="fd-progress-indicator__remaining">
+                    <span class="fd-progress-indicator__label">
+                      {{ item['value'] }} of {{ item['max'] }} ({{ item['width']}})
+                    </span>
+                  </div>
+                </div>
+              </div>
+              }
+            </td>
+          </tr>
+        }
+        </tbody>
+      </table>
+    </div>
+  </div>
+</ng-template>
+
+<ng-template #sidePage>
   <div class="progress-container">
     @if (isNewBackup) {
-      <div class="content-sticky" style="background-color: white;">
+      <div class="content-sticky fd-margin-begin-end--sm" style="background-color: white;">
         @if (isProgress) {
-          <div class="progress-content">
-            <h2 class="fd-title fd-title--h2">In Progress</h2>
-            <div class="progress-wrapper">
-              <svg viewBox="0 0 64 64" class="pie">
-                <circle cx="50%" cy="50%" r="25%"
-                  stroke-dashoffset="0" 
-                  fill="none" stroke-width="32"
-                  [attr.stroke-dasharray]="progressDasharray"
-                  stroke="grey">
-                </circle>
-              </svg>
-              <div class="progress-text">{{ progress }}%</div>
-            </div>
-            <div class="progress-bar">
-              <div class="fd-progress-indicator fd-progress-indicator--{{ updateBarColor }}" tabindex="-1" role="progressbar">
-                <div class="fd-progress-indicator__remaining">
-                  <span class="fd-progress-indicator__label">Table1 (10)</span>
-                </div>
-                <div class="fd-progress-indicator__container">
-                  <div class="fd-progress-indicator__progress-bar" [style.min-width.%]="progress" [style.width]="progress">
-                    <span class="fd-progress-indicator__label">{{ progress }}%</span>
+          <div class="fd-container fd-form-layout-grid-container">
+            <div class="fd-row">
+              <div class="fd-col fd-col-lg--12 fd-col--wrap fd-form-group">
+                <div class="fd-row fd-form-item">
+                  <div class="fd-col-md--8">
+                    <h2 class="fd-title fd-title--h2">In Progress</h2>
+                  </div>
+                  <div class="fd-col-md--4" style="text-align: right;">
+                    <button class="fd-button fd-button--transparent" title="close" (click)="onDecline()">
+                      <i class="sap-icon--decline"></i>
+                    </button>
+                  </div>
+                  <div class="fd-col">
+                    <div class="progress-wrapper">
+                      <svg viewBox="0 0 64 64" class="pie">
+                        <circle cx="50%" cy="50%" r="25%"
+                          stroke-dashoffset="0" 
+                          fill="none" stroke-width="32"
+                          [attr.stroke-dasharray]="progressDasharray"
+                          stroke="grey">
+                        </circle>
+                      </svg>
+                      <div class="progress-text">{{ progress }}%</div>
+                    </div>
+                    <div class="progress-bar">
+                      <div class="fd-progress-indicator fd-progress-indicator--{{ updateBarColor }}" tabindex="-1" role="progressbar">
+                        <div class="fd-progress-indicator__remaining">
+                          <span class="fd-progress-indicator__label">Table1 (10)</span>
+                        </div>
+                        <div class="fd-progress-indicator__container">
+                          <div class="fd-progress-indicator__progress-bar" [style.min-width.%]="progress" [style.width]="progress">
+                            <span class="fd-progress-indicator__label">{{ progress }}%</span>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
                   </div>
                 </div>
               </div>
@@ -50,14 +205,21 @@
         } @else {
           <div class="fd-container fd-form-layout-grid-container">
             <div class="fd-row">
-    
               <div class="fd-col fd-col-lg--12 fd-col--wrap fd-form-group">
                 <div class="fd-row fd-form-item">
+                  <div class="fd-col-md--8 fd-margin-bottom--sm">
+                    <h2 class="fd-title fd-title--h2">Details</h2>
+                  </div>
+                  <div class="fd-col-md--4 fd-margin-bottom--sm" style="text-align: right;">
+                    <button class="fd-button fd-button--transparent" title="close" (click)="onDecline()">
+                      <i class="sap-icon--decline"></i>
+                    </button>
+                  </div>
                   <div class="fd-col">
                     <label class="fd-form-label" for="input-2-country">User:</label>
                   </div>
                   <div class="fd-col fd-col-md--6">
-                    <div class="fd-popover" style="width:100%" cdkOverlayOrigin #object_overlay="cdkOverlayOrigin" (click)="hide_user_select = !hide_user_select">
+                    <div class="fd-popover" style="width:100%" cdkOverlayOrigin #user_overlay="cdkOverlayOrigin" (click)="hide_user_side_select = !hide_user_side_select">
                       <div class="fd-popover__control">
                         <div class="fd-select">
                           <div aria-controls="h031XCM509" aria-expanded="false" aria-haspopup="listbox" class="fd-select__control"
@@ -69,18 +231,19 @@
                           </div>
                         </div>
                       </div>
-                      <ng-template cdkConnectedOverlay [cdkConnectedOverlayOrigin]="sidePage.elementRef.nativeElement.object_overlay"
-                        [cdkConnectedOverlayOpen]="!hide_object_select">
-                        <ng-container [ngTemplateOutlet]="select_object_overlay"></ng-container>
+                      <ng-template cdkConnectedOverlay [cdkConnectedOverlayOrigin]="user_overlay"
+                        [cdkConnectedOverlayOpen]="!hide_user_side_select">
+                        <ng-container [ngTemplateOutlet]="select_user_overlay" 
+                          [ngTemplateOutletContext]="{ $implicit: 'sideSelect' }">
+                        </ng-container>
                       </ng-template>
                     </div>
                   </div>
-                  <div class="fd-col fd-col-md--4">
+                  <div class="fd-col fd-col-md--2">
                     <button class="fd-button fd-button--emphasized" (click)="backup()">Start Backup</button>
                   </div>
                 </div>
               </div>
-    
             </div>
           </div>
         }
@@ -114,150 +277,7 @@
   </div>
 </ng-template>
 
-<ng-template #sidePage>
-  <main class="fd-page">
-    <header class="content-sticky">
-      <div class="fd-bar fd-bar--page fd-bar--header">
-        <div class="fd-bar__left">
-          <div class="fd-bar__element">
-            Database Backup
-          </div>
-        </div>
-        <div class="fd-bar__right">
-          <div class="fd-bar__element">
-            <button class="fd-button fd-button--transparent" aria-label="See more">
-              <i class="sap-icon--grid"></i>
-            </button>
-          </div>
-        </div>
-      </div>
-    </header>
-    <div class="fd-page__content" role="region">
-      <div class="content-sticky" style="background-color: white;">
-        <div class="fd-container fd-form-layout-grid-container fd-form-layout-grid-container--lg-vertical fd-form-layout-grid-container--xl-vertical">
-          <div class="fd-row">
-            <div class="fd-col fd-col-lg--12 fd-col--wrap fd-form-group">
-              <div class="fd-row fd-form-item">
-                <div class="fd-col fd-col-md--4 fd-col-lg--8">
-                  <label class="fd-form-label" for="input-2-country">User:</label>
-                </div>
-                <div class="fd-col fd-col-md--8 fd-col-lg--4">
-                  <div class="fd-popover" style="width:100%" cdkOverlayOrigin #user_overlay="cdkOverlayOrigin" (click)="hide_user_select = !hide_user_select">
-                    <div class="fd-popover__control">
-                      <div class="fd-select">
-                        <div aria-controls="h031XCM509" aria-expanded="false" aria-haspopup="listbox" class="fd-select__control"
-                          aria-label="Country" tabindex="0">
-                          <span class="fd-select__text-content">{{ selected_user }}</span>
-                          <span class="fd-button fd-button--transparent fd-select__button">
-                            <i class="sap-icon--slim-arrow-down"></i>
-                          </span>
-                        </div>
-                      </div>
-                    </div>
-                    <ng-template cdkConnectedOverlay [cdkConnectedOverlayOrigin]="user_overlay"
-                      [cdkConnectedOverlayOpen]="!hide_user_select">
-                      <ng-container [ngTemplateOutlet]="select_user_overlay"></ng-container>
-                    </ng-template>
-                  </div>
-                </div>
-              </div>
-            </div>
-            <div class="fd-col fd-col-lg--12 fd-col--wrap fd-form-group">
-              <div class="fd-row fd-form-item">
-                <div class="fd-col fd-col-md--4 fd-col-lg--8">
-                  <label class="fd-form-label" for="input-2-country">Start & End Date:</label>
-                </div>
-                <div class="fd-col fd-col-md--4 fd-col-lg--2">
-                  <div class="fd-input-group">
-                    <input class="fd-input fd-input-group__input" type="date">
-                  </div>
-                </div>
-                <div class="fd-col fd-col-md--4 fd-col-lg--2">
-                  <div class="fd-input-group">
-                    <input class="fd-input fd-input-group__input" type="date">
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-      <div class="fd-padding-responsive--sm fd-margin-top-bottom--sm">
-        <div class="fd-toolbar fd-toolbar--title" role="toolbar">
-          <h4 class="fd-title fd-title--h4 fd-toolbar__title">Database Name ({{ ds_users.length }})</h4>
-          <span class="fd-toolbar__spacer"></span>
-          <button class="fd-button fd-button--transparent" (click)="new()">New</button>
-          <button class="fd-button fd-button--transparent" (click)="clear()">Clear</button>
-          <button class="fd-button fd-button--transparent" title="Refresh" (click)="refresh()">
-            <i class="sap-icon--refresh"></i>
-          </button>
-          <button class="fd-button fd-button--transparent" title="Text" (click)="show_text()">
-            <i class="sap-icon--list"></i>
-          </button>
-          <button class="fd-button fd-button--transparent" title="Bar" (click)="show_bar()">
-            <i class="sap-icon--horizontal-bar-chart"></i>
-          </button>
-        </div>
-        <table class="fd-table">
-          <thead class="fd-table__header">
-            <tr class="fd-table__row">
-              <!-- <th class="fd-table__cell" style="width: 32px;">
-                <fdl-checkbox
-                  (change)="$event ? toggleAllRows() : null"
-                  [checked]="selection.hasValue() && isAllSelected()"
-                  [indeterminate]="selection.hasValue() && !isAllSelected()">
-  
-                </fdl-checkbox>
-              </th> -->
-              <th class="fd-table__cell" scope="col" style="width:30%">Name</th>
-              <th class="fd-table__cell" scope="col">Start</th>
-              <th class="fd-table__cell" scope="col">End</th>
-              <th class="fd-table__cell" scope="col">Status</th>
-            </tr>
-          </thead>
-          <tbody class="fd-table__body">
-          @for (item of ds_filtered_objects; track $index) {
-            <tr class="fd-table__row">
-              <td class="fd-table__cell">
-                <!-- <fdl-checkbox
-                  (click)="$event.stopPropagation()"
-                  (change)="$event ? selection.toggle(item) : null"
-                  [checked]="selection.isSelected(item)">
-                </fdl-checkbox> -->
-              </td>
-              <td class="fd-table__cell">{{ item['name'] }}</td>
-              <td class="fd-table__cell"><span class="fd-table__text">{{ item['type'] }}</span></td>
-              <td class="fd-table__cell">
-                @if (item['status_type'] == 'text') {
-                <span class="fd-object-status fd-object-status--negative">
-                  <i class="fd-object-status__icon sap-icon--message-error" role="presentation"></i>
-                  <span class="fd-object-status__text">Highlight of Whole Row</span>
-                </span>
-                }
-                @else if (item['status_type'] == 'bar') {
-                <div class="fd-progress-indicator fd-progress-indicator--informative" tabindex="-1" role="progressbar">
-                  <!-- aria-valuemin="20" aria-valuenow="42" aria-valuemax="100" aria-valuetext="42%" aria-label="42%"> -->
-                  <div class="fd-progress-indicator__container">
-                    <div class="fd-progress-indicator__progress-bar" [style.width]="item['width']" [style.min-width]="item['width']"></div>
-                    <div class="fd-progress-indicator__remaining">
-                      <span class="fd-progress-indicator__label">
-                        {{ item['value'] }} of {{ item['max'] }} ({{ item['width']}})
-                      </span>
-                    </div>
-                  </div>
-                </div>
-                }
-              </td>
-            </tr>
-          }
-          </tbody>
-        </table>
-      </div>
-    </div>
-  </main>
-</ng-template>
-
-<ng-template #select_user_overlay>
+<ng-template #select_user_overlay let-action>
   <div aria-hidden="false" class="fd-popover__body fd-popover__body--no-arrow fd-popover__body--dropdown"
     id="h0C6A325b">
     <ul aria-activedescendant="defaultSelectCombobox-currentlyFocusedItem" aria-labelledby="cozySelectLabel"
@@ -267,26 +287,8 @@
           id="defaultSelectCombobox-currentlyFocusedItem"
           class="fd-list__item"
           role="option"
-          tabindex="0" (click)="on_user_selected(item['name'])">
+          tabindex="0" (click)="on_user_selected(action, item['name'])">
             <span class="fd-list__title">{{ item['name'] }}</span>
-        </li>
-      }
-    </ul>
-  </div>
-</ng-template>
-
-<ng-template #select_object_overlay>
-  <div aria-hidden="false" class="fd-popover__body fd-popover__body--no-arrow fd-popover__body--dropdown"
-    id="h0C6A325b">
-    <ul aria-activedescendant="defaultSelectCombobox-currentlyFocusedItem" aria-labelledby="cozySelectLabel"
-      class="fd-list fd-list--dropdown" role="listbox">
-      @for (item of ds_object_types; track $index) {
-        <li
-          id="defaultSelectCombobox-currentlyFocusedItem"
-          class="fd-list__item"
-          role="option"
-          tabindex="0" (click)="on_object_type_selected(item)">
-            <span class="fd-list__title">{{ item }}</span>
         </li>
       }
     </ul>

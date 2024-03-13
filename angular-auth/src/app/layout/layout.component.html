@@ -19,81 +19,6 @@
     </div>
   </div>
   <div class="fd-shellbar__group fd-shellbar__group--actions">
-    <!-- <div class="fd-shellbar__action">
-
-      <div class="fd-popover fd-popover--right">
-        <div class="fd-popover__control">
-          @if (progress == 0) {
-            <div class="fd-button fd-button--transparent fd-shellbar__button fd-user-menu__control"
-              (click)="isShellbarProgres = !isShellbarProgres">
-              <span class="fd-avatar fd-avatar--xs fd-avatar--circle fd-avatar--accent-color-8" role="img">
-                <i role="presentation" class="fd-avatar__icon sap-icon--in-progress"></i>
-              </span>
-            </div>
-          } @else {
-            <div class="progress-wrapper" (click)="isShellbarProgres = !isShellbarProgres">
-              <svg viewBox="0 0 64 64" class="pie">
-                <circle cx="50%" cy="50%" r="25%"
-                  stroke-dashoffset="0" stroke-width="32"
-                  stroke-dasharray="100 0" stroke="grey">
-                </circle>
-                <circle cx="50%" cy="50%" r="25%"
-                  stroke-dashoffset="0" 
-                  fill="none" stroke-width="32"
-                  [attr.stroke-dasharray]="progressDasharray"
-                  stroke="#aab8ff">
-                </circle>
-              </svg>
-            </div>
-          }
-        </div>
-        <div class="fd-popover__body fd-popover__body--right" [attr.aria-hidden]="isShellbarProgres">
-          <div class="fd-popover__body-content">
-            <div class="fd-notification fd-notification--group fd-notification--padding fd-notification--btp">
-              <div class="fd-notification__group-header" 
-                style="position: static;top: 0;">
-                <span class="fdb-notification__group-header-title">Today</span>
-                <i class="sap-icon--slim-arrow-down" role="presentation"></i>
-              </div>
-              <div style="height: 300px;overflow: auto;">
-                @for (item of [].constructor(10); track item; let idx = $index;) {
-                <div class="fd-notification__body">
-                  <div class="fd-notification__content fd-notification__content--no-avatar">
-                    <div class="fd-notification__header">
-                      <div class="fd-notification__indicator fd-notification__indicator--success"></div>
-                      <h2 class="fd-notification__title fd-notification__title--unread">unify-v{{idx}}-15-Juni-2023.bak</h2>
-                    </div>
-                    @if (progress != 100) {
-                      <span class="fd-notification__paragraph">
-                        <div class="fd-progress-indicator fd-progress-indicator--{{ progressColor }}" tabindex="-1"
-                          role="progressbar" aria-valuemin="0" aria-valuenow="42" aria-valuemax="100">
-                          <div class="fd-progress-indicator__container">
-                            <div class="fd-progress-indicator__progress-bar" 
-                              [style.min-width.%]="progress" [style.width.%]="progress">
-                            </div>
-                            <div class="fd-progress-indicator__remaining">
-                              <span class="fd-progress-indicator__icon"></span>
-                              <span class="fd-progress-indicator__label">{{ progress }}%</span>
-                            </div>
-                          </div>
-                        </div>
-                      </span>
-                    }
-                    <p class="fd-notification__footer">
-                      <span class="fd-notification__footer-content">7 minutes ago</span>
-                    </p>
-                  </div>
-                </div>
-                }
-              </div>
-              <div class="fd-notification__limit">
-                <button class="fd-button">Load more</button>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div> -->
     <div class="fd-shellbar__action">
       <div class="fd-popover fd-popover--right">
         <div class="fd-popover__control">
@@ -121,6 +46,6 @@
     </div>
   </div>
 </div>
-<div class="fd-dynamic-page fd-dynamic-page--xl dynamic-page-container">
+<section class="fd-dynamic-page fd-dynamic-page--{{size}}">
   <router-outlet></router-outlet>
-</div>
+</section>

@@ -5,6 +5,7 @@ import { SelectOptionComponent } from '../shared/components/select-option/select
 import { RouterModule } from '@angular/router';
 import { FormsModule } from '@angular/forms';
 import { IProfile } from '../shared/interfaces/response';
+import { BreakpointObserverService } from '../shared/services/breakpoint-observer.service';
 
 type ProgressColor = 'positive' | 'informative' | 'critical';
 
@@ -24,8 +25,15 @@ export class LayoutComponent {
   public progressColor!: ProgressColor;
   
   public user: IProfile = this._authSvc.guest;
+  public size: string = 'xl';
+
+  private breakpointService: BreakpointObserverService = inject(BreakpointObserverService);
 
   constructor() {
+    this.breakpointService.getBreakpointObserver().subscribe(e => {
+      if (typeof e == 'string') this.size = e;
+    });
+
     this.progressColor = this.updateBarColor();
     setInterval(() => {
       if (this.progress < 100) {

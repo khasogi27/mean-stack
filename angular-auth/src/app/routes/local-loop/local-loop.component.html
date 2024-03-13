@@ -1,0 +1,153 @@
+<!-- <div class="side-container">
+  <div class="content-sticky fd-padding-begin-end--sm" style="background-color: white;">
+    <div class="fd-container fd-form-layout-grid-container">
+      <div class="fd-row">
+        <div class="fd-col fd-col-lg--12 fd-col--wrap fd-form-group">
+          <div class="fd-row fd-form-item">
+            <div class="fd-col-md--12 fd-margin-bottom--sm">
+              <h2 class="fd-title fd-title--h2">Local Loop</h2>
+            </div>
+            <div class="fd-row fd-form-item">
+              <div class="fd-col fd-col-md--12 fd-col-lg--3 fd-col-xl--2">
+                <div class="fd-form-item">
+                  <label class="fd-form-label" for="aend">Aend:</label>
+                  <input class="fd-input" type="text" id="aend" placeholder="Aend of coord">
+                </div>
+              </div>
+              <div class="fd-col fd-col-md--12 fd-col-lg--3 fd-col-xl--2">
+                <div class="fd-form-item">
+                  <label class="fd-form-label" for="bend">Bend:</label>
+                  <input class="fd-input" type="text" id="bend" placeholder="Bend or coord">
+                </div>
+              </div>
+              <div class="fd-form-item" style="margin: auto 0;">
+                <label class="fd-form-label">&nbsp;</label>
+                <button class="fd-button">
+                  <span class="fd-button__text">Search</span>
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div> -->
+
+<header class="fd-dynamic-page__header">
+  <div class="fd-dynamic-page__title-area " tabindex="0" 
+    (click)="isCollapsedHeader = !isCollapsedHeader;">
+    <div class="fd-dynamic-page__main-container">
+      <div class="fd-dynamic-page__breadcrumb-title-container">
+        <div class="fd-dynamic-page__title-container">
+          <h3 class="fd-title fd-title--h3">{{ pageTitle }}</h3>
+        </div>
+      </div>
+    </div>
+    <div class="fd-dynamic-page__subtitle">{{ pageSubTitle }}</div>
+  </div>
+  <div class="fd-dynamic-page__collapsible-header-container" style="z-index: 1;">
+    <div class="fd-dynamic-page__collapsible-header" role="region" [attr.aria-hidden]="isCollapsedHeader">
+      <div class='fd-container'>
+        <div class='fd-row'>
+          <div style="display: flex; justify-content: start; margin: auto">
+            <div style="justify-content: center;">
+              <label fd-form-label for="search">&nbsp;</label>
+              <div>
+                <button class="fd-button fd-button--ghost" title="Drop Point Aend">
+                  <i class="sap-icon--pushpin-off"></i>
+                </button>
+              </div>
+            </div>
+          </div>
+          <div class='fd-col fd-col--10 fd-col-md--6 fd-col-lg--3 fd-col-xl--2 fd-margin-end--sm'>
+            <div class="fd-form-item">
+              <label class="fd-form-label" for="aend">Aend:</label>
+              <!-- <app-combobox #aendCombobox [dropdownValues]="dsPops" placeholder="GPS Coordinate (Lat, Lon) or POP">
+              </app-combobox> -->
+              <input class="fd-input" type="text" id="aend" placeholder="GPS Coordinate (Lat, Lon) or POP">
+            </div>
+          </div>
+          <div style="display: flex; justify-content: start; margin: auto">
+            <div style="justify-content: center;">
+              <label fd-form-label for="search">&nbsp;</label>
+              <div>
+                <button class="fd-button fd-button--ghost" title="Drop Point Bend">
+                  <i class="sap-icon--pushpin-off"></i>
+                </button>
+              </div>
+            </div>
+          </div>
+          <div class='fd-col fd-col--10 fd-col-md--6 fd-col-lg--3 fd-col-xl--2'>
+            <div class="fd-form-item">
+              <label class="fd-form-label" for="bend">Bend:</label>
+              <!-- <app-combobox #bendCombobox [dropdownValues]="dsPops" placeholder="GPS Coordinate (Lat, Lon) or POP">
+              </app-combobox> -->
+              <input class="fd-input" type="text" id="bend" placeholder="GPS Coordinate (Lat, Lon) or POP">
+            </div>
+          </div>
+          <div class='fd-col fd-col--full' style="display: flex; justify-content: start; margin: auto">
+            <div style="justify-content: center;">
+              <label class="fd-form-label" for="input-1">&nbsp;</label>
+              <div>
+                <button aria-label="Decline" class="fd-button fd-button--emphasized">
+                  <!-- <i class="sap-icon--search"></i> -->
+                  <span class="fd-button__text">Search</span>
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="fd-dynamic-page__collapsible-header-visibility-container">
+      <div class="fd-dynamic-page__collapsible-header-visibility-container--left-gradient"></div>
+      <div role="toolbar" aria-label="Header actions"
+        class="fd-dynamic-page__collapsible-header-visibility-container--button-group">
+        <button class="fd-dynamic-page__collapse-button fd-button" aria-label="See More" 
+          (click)="isCollapsedHeader = !isCollapsedHeader;">
+          <i [class]="isCollapsedHeader ? 'sap-icon--slim-arrow-down' : 'sap-icon--slim-arrow-up'"></i>
+        </button>
+      </div>
+      <div class="fd-dynamic-page__collapsible-header-visibility-container--right-gradient"></div>
+    </div>
+  </div>
+</header>
+
+<div class="fd-dynamic-page__content" style="display: contents;">
+  @if (false) {
+  <div class="fd-container fd-margin-begin--md route-container-combobox">
+    <div class='fd-row'>
+      <div class='fd-margin--sm'>
+        <div class="fd-form-item">
+          <!-- <app-multi-combobox #routeCombobox [dataSource]="dsLines" [isSelecAll]="false" lookupKey="id"
+            displayKey="name" secondaryKey="length" [isOpen]="true" placeholder="Route ..."
+            (selectionChange)="onRouteClick($event)">
+          </app-multi-combobox> -->
+          <input class="fd-input" type="text" id="aend" placeholder="GPS Coordinate (Lat, Lon) or POP">
+        </div>
+      </div>
+      <div class='fd-margin-top-bottom--sm fd-margin-end--sm route-container-button'>
+        <div class="fd-form-item route-content-button">
+          @if (true) {
+          <button class="fd-button fd-button--ghost">
+            <!-- <i class="sap-icon--money-bills"></i> -->
+            <span class="fd-button__text">Create RFQ</span>
+          </button>
+          }
+        </div>
+      </div>
+    </div>
+  </div>
+  }
+</div>
+<div class="leaflet-controler"
+  leaflet 
+  [leafletOptions]="options"
+  [leafletLayers]="layerMarker"
+  (leafletClick)="onClick($event)"
+  >
+  @for (line of layerPolyline; track $index) {
+    <div [leafletLayer]="line"></div>
+  }
+</div>

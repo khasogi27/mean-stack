@@ -1,10 +1,4 @@
-.flexible-column-layout-container {
-  height: 90%;
-  position: absolute;
-  width: 100%;
-}
-
-.progress-container {
+.progress-container, .side-container {
   width: 100%;
   height: 100%;
 }
@@ -12,7 +6,7 @@
 .content-sticky {
   position: sticky;
   top: 0;
-  z-index: 100;
+  z-index: 10;
 }
 
 .progress-content {

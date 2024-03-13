@@ -31,6 +31,8 @@ export class LoginComponent {
     ])
   });
 
+  constructor() {}
+
   get passwordVisible (): boolean {
     return this.formLogin.controls['password'].value != '';
   }
@@ -40,18 +42,18 @@ export class LoginComponent {
     const formData = this.formLogin.value;
     this._authSvc.login(formData)
       .subscribe((resp: IPostResponse) => {
-        if (resp.code != 0) {
-          const getError = resp.result.errors;
-          console.log(getError, 'getError');
-          if (getError) {
-            this.arrError = { 
-              email: getError.email ? getError.email[0] : '',
-              password: getError.password ? getError.password[0] : ''
-            }
-          }
+        if (resp.code == 0) {
+          console.log(resp, 'result login onSubmit');
           return;
         }
-        console.log(resp, 'result login onSubmit');
+        const getError = resp.result.errors;
+        console.log(getError, 'getError');
+        if (getError) {
+          this.arrError = { 
+            email: getError.email ? getError.email[0] : '',
+            password: getError.password ? getError.password[0] : ''
+          }
+        }
       });
   }
 }

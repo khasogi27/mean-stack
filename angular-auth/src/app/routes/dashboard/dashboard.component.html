@@ -20,7 +20,6 @@
 
       <h3 class="fd-margin-top-bottom--sm">{{ getToday | titlecase }}</h3>
       <div class="fd-custom-content">
-
         <div role="button" tabindex="0" class="fd-tile fd-tile--launch" routerLink="/data-base">
           <div class="fd-tile__header">
             <div class="fd-tile__title">Backup</div>
@@ -49,7 +48,6 @@
             </div>
           </div>
         </div>
-
         <div role="button" tabindex="0" class="fd-tile fd-tile--launch"
           routerLink="/data-base">
           <div class="fd-tile__header">
@@ -83,34 +81,28 @@
 
       <h3 class="fd-margin-top-bottom--sm">Demo</h3>
       <div class="fd-custom-content">
-        <div role="button" tabindex="0" class="fd-tile fd-tile--launch"
-          routerLink="/user">
-          <div class="fd-tile__header-content">
-            <div class="fd-tile__title">User</div>
-            <div class="fd-tile__subtitle">Subtitle</div>
-          </div>
-          <div class="fd-tile__footer fd-tile__footer--2-col">
-            <div class="fd-tile__section">
-              <i class="fd-tile__refresh sap-icon--refresh" aria-label="Refresh"></i>
-              <span class="fd-tile__footer-text">Now</span>
+        @for (tile of dsTitleBasic; track tile; let idx = $index) {
+          <div role="button" tabindex="0" class="fd-tile fd-tile--launch"
+            [routerLink]="tile.url">
+            <div class="fd-tile__header-content">
+              <div class="fd-tile__title">{{ tile.title }}</div>
+              @if (tile.subtitle) {
+                <div class="fd-tile__subtitle">{{ tile.subtitle }}</div>
+              }
             </div>
-            <div class="fd-tile__section"><span class="fd-tile__footer-text">Footer</span></div>
-          </div>
-        </div>
-        <div role="button" tabindex="1" class="fd-tile fd-tile--launch"
-          routerLink="/job-schedule">
-          <div class="fd-tile__header-content">
-            <div class="fd-tile__title">Job Schedule</div>
-            <div class="fd-tile__subtitle">Subtitle</div>
-          </div>
-          <div class="fd-tile__footer fd-tile__footer--2-col">
-            <div class="fd-tile__section">
-              <i class="fd-tile__refresh sap-icon--refresh" aria-label="Refresh"></i>
-              <span class="fd-tile__footer-text">Now</span>
+            <div class="fd-tile__footer fd-tile__footer--2-col">
+              <div class="fd-tile__section">
+                @if (tile.contentIcon) {
+                  <i class="fd-tile__refresh sap-icon--{{ tile.contentIcon }}"></i>
+                }
+                <span class="fd-tile__footer-text">{{ tile.footerText }}</span>
+              </div>
+              <div class="fd-tile__section">
+                <span class="fd-tile__footer-text">{{ tile.footerSection }}</span>
+              </div>
             </div>
-            <div class="fd-tile__section"><span class="fd-tile__footer-text">Footer</span></div>
           </div>
-        </div>
+        }
       </div>
 
     </div>

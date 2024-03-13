@@ -20,6 +20,10 @@ export class RegisterComponent extends LoginComponent {
   });
   public override arrError: IError = { fullName: '', email: '', password: '' };
 
+  constructor() {
+    super();
+  }
+
   override get passwordVisible(): boolean {
     return this.formRegister.controls['password'].value != '';
   }
@@ -29,19 +33,19 @@ export class RegisterComponent extends LoginComponent {
     this._authSvc.register(formData)
       .subscribe((resp: IPostResponse) => {
         console.log(resp.code, 'resp.code');
-        if (resp.code != 0) {
-          const getError = resp.result.errors;
-          console.log(getError, 'getError');
-          if (getError) {
-            this.arrError = { 
-              fullName: getError.fullName ? getError.fullName[0] : '',
-              email: getError.email ? getError.email[0] : '',
-              password: getError.password ? getError.password[0] : ''
-            }
-          }
+        if (resp.code == 0) {
+          console.log(resp, 'result register onSubmit');
           return;
         }
-        console.log(resp, 'result register onSubmit');
+        const getError = resp.result.errors;
+        console.log(getError, 'getError');
+        if (getError) {
+          this.arrError = { 
+            fullName: getError.fullName ? getError.fullName[0] : '',
+            email: getError.email ? getError.email[0] : '',
+            password: getError.password ? getError.password[0] : ''
+          }
+        }
       });
   }
 }

@@ -8,19 +8,6 @@
       <div [formGroup]="formLogin">
         <div class='fd-col--12 fd-margin-bottom--tiny'>
           <div class="fd-form-item">
-            <!-- <label class="fd-form-label" for="email">Email:</label> -->
-            <!-- <div class="fd-popover">
-              <div class="fd-popover__control" aria-controls="popoverEmail" aria-expanded="true" aria-haspopup="true">
-                <div class="fd-input-group">
-                  <input class="fd-input" type="email" id="email" 
-                    formControlName="email" placeholder="Email">
-                </div>
-              </div>
-              <div class="fd-popover__body fd-popover__body--input-message-group fd-popover__body--no-arrow"
-                [attr.aria-hidden]="arrError.email == ''" id="popoverEmail">
-                <div class="fd-form-message fd-form-message--warning">{{ arrError.email }}</div>
-              </div>
-            </div> -->
             <div class="fd-input-group">
               <input class="fd-input" type="email" id="email" 
                 formControlName="email" placeholder="Email">
@@ -29,26 +16,6 @@
         </div>
         <div class='fd-col--12 fd-margin-bottom--tiny'>
           <div class="fd-form-item">
-            <!-- <label class="fd-form-label" for="password">Password:</label> -->
-            <!-- <div class="fd-popover">
-              <div class="fd-popover__control" aria-controls="popoverPass" aria-expanded="true" aria-haspopup="true">
-                <div class="fd-input-group">
-                  <input class="fd-input" [type]="isPassword ? 'password': 'text'" id="password" 
-                    formControlName="password" placeholder="Password">
-                  @if (passwordVisible) {
-                    <span class="fd-input-group__addon fd-input-group__addon--button">
-                      <button class="fd-input-group__button fd-button fd-button--transparent" (click)="isPassword = !isPassword">
-                        <span [class]="isPassword ? 'sap-icon--show' : 'sap-icon--hide'" role="presentation"></span>
-                      </button>
-                    </span>
-                  }
-                </div>
-              </div>
-              <div class="fd-popover__body fd-popover__body--input-message-group fd-popover__body--no-arrow"
-                [attr.aria-hidden]="arrError.password == ''" id="popoverPass">
-                <div class="fd-form-message fd-form-message--warning">{{ arrError.password }}</div>
-              </div>
-            </div> -->
             <div class="fd-input-group">
               <input class="fd-input" [type]="isPassword ? 'password': 'text'" id="password" 
                 formControlName="password" placeholder="Password">
@@ -67,22 +34,24 @@
       <div class='fd-col--12 fd-margin-top-bottom--md'>
         @if (arrError.email != '') {
           <ng-container [ngTemplateOutlet]="errorTemp" [ngTemplateOutletContext]="{ $implicit:arrError.email }"></ng-container>
-        } 
+        }
         @if (arrError.password != '') {
           <ng-container [ngTemplateOutlet]="errorTemp" [ngTemplateOutletContext]="{ $implicit:arrError.password }"></ng-container>
         }
       </div>
 
-      <div class='fd-col--12 fd-margin-top--lg'>
+      <div class='fd-col--12 fd-margin-bottom--tiny'>
         <button class="fd-button fd-button--emphasized" style="width: 100%;" (click)="onSubmit()">
           <span class="fd-button__text">Signin</span>
         </button>
       </div>
-      <div class='fd-col--12 fd-margin-top--tiny'>
+
+      <div class='fd-col--12'>
         <button class="fd-button" style="width: 100%;" routerLink="/register">
           <span class="fd-button__text">Register ?</span>
         </button>
       </div>
+      
     </div>
   </div>
 </div>

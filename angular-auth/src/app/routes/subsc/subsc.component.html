@@ -1,0 +1,362 @@
+<div class="main-container">
+  <div class="content-sticky fd-margin-begin-end--sm" style="background-color: white;">
+    <div class="fd-container fd-form-layout-grid-container">
+      <div class="fd-row">
+        <div class="fd-col fd-col-lg--12 fd-col--wrap fd-form-group">
+          <div class="fd-row fd-form-item">
+            <div class="fd-col">
+              <h2 class="fd-title fd-title--h2">Subscription Form</h2>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  
+  <div class="fd-padding-responsive--sm fd-margin-top-bottom--sm">
+    <div class="fd-container fd-form-layout-grid-container" [formGroup]="form">
+
+      <!-- Customer -->
+      <div class="fd-row">
+        <div class="fd-form-header fd-margin-top-bottom--sm">
+          <span class="fd-form-header__text">Customer</span>
+        </div>
+
+        <!-- User Detail -->
+        <div class="fd-row fd-form-item subtitle">
+          <div class="fd-col">
+            <div class="fd-object-identifier fd-margin--sm fd-margin-top--tiny">
+              <p class="fd-object-identifier__title fd-object-identifier__title--bold">User Detail</p>
+            </div>
+          </div>
+        </div>
+        <div class="fd-row fd-form-item">
+          <div class="fd-col fd-col-md--4 fd-col-lg--2">
+            <label class="fd-form-label" for="noId">No.ID:</label>
+          </div>
+          <div class="fd-col fd-col-md--8 fd-col-lg--2">
+            <input class="fd-input" type="text" id="noId">
+          </div>
+          <div class="fd-col fd-col-md--4 fd-col-lg--1">
+            <label class="fd-form-label" for="company">Company:</label>
+          </div>
+          <div class="fd-col fd-col-md--8 fd-col-lg--2">
+            <input class="fd-input" type="text" id="company">
+          </div>
+        </div>  
+        <div class="fd-row fd-form-item">
+          <div class="fd-col fd-col-md--4 fd-col-lg--2">
+            <label class="fd-form-label" for="userPhone">Phone:</label>
+          </div>
+          <div class="fd-col fd-col-md--8 fd-col-lg--2">
+            <input class="fd-input" type="text" id="userPhone" formControlName="userDetailPhone">
+          </div>
+          <div class="fd-col fd-col-md--4 fd-col-lg--1">
+            <label class="fd-form-label" for="npwp">NPWP:</label>
+          </div>
+          <div class="fd-col fd-col-md--8 fd-col-lg--2">
+            <input class="fd-input" type="text" id="npwp">
+          </div>
+        </div>
+        <div class="fd-row fd-form-item">
+          <div class="fd-col fd-col-md--4 fd-col-lg--2">
+            <label class="fd-form-label" for="userAddress">Address:</label>
+          </div>
+          <div class="fd-col fd-col-md--8 fd-col-lg--5">
+            <textarea class="fd-textarea" id="userAddress"></textarea>
+          </div>
+        </div>
+
+        <!-- Authorized Contact -->
+        <div class="fd-row fd-form-item subtitle">
+          <div class="fd-col">
+            <div class="fd-object-identifier fd-margin--sm">
+              <p class="fd-object-identifier__title fd-object-identifier__title--bold">Authorized Contact</p>
+            </div>
+          </div>
+        </div>
+        <div class="fd-row fd-form-item">
+          <div class="fd-col fd-col-md--4 fd-col-lg--2">
+            <label class="fd-form-label" for="authorName">Name:</label>
+          </div>
+          <div class="fd-col fd-col-md--8 fd-col-lg--2">
+            <input class="fd-input" type="text" id="authorName">
+          </div>
+          <div class="fd-col fd-col-md--4 fd-col-lg--1">
+            <label class="fd-form-label" for="authorEmail">E-mail:</label>
+          </div>
+          <div class="fd-col fd-col-md--8 fd-col-lg--2">
+            <input class="fd-input" type="text" id="authorEmail">
+          </div>
+        </div>
+        <div class="fd-row fd-form-item">
+          <div class="fd-col fd-col-md--4 fd-col-lg--2">
+            <label class="fd-form-label" for="authorPhone">Phone:</label>
+          </div>
+          <div class="fd-col fd-col-md--8 fd-col-lg--2">
+            <input class="fd-input" type="number" id="authorPhone">
+          </div>
+          <div class="fd-col fd-col-md--4 fd-col-lg--1">
+            <label class="fd-form-label" for="authorFax">Fax:</label>
+          </div>
+          <div class="fd-col fd-col-md--8 fd-col-lg--2">
+            <input class="fd-input" type="text" id="authorFax">
+          </div>
+        </div>
+
+        <!-- Billing Contact -->
+        <div class="fd-row fd-form-item subtitle">
+          <div class="fd-col">
+            <div class="fd-object-identifier fd-margin--sm">
+              <p class="fd-object-identifier__title fd-object-identifier__title--bold">Billing Contact</p>
+            </div>
+          </div>
+        </div>
+        <div class="fd-row fd-form-item">
+          <div class="fd-col fd-col-md--4 fd-col-lg--2">
+            <label class="fd-form-label" for="billingName">Name:</label>
+          </div>
+          <div class="fd-col fd-col-md--8 fd-col-lg--2">
+            <input class="fd-input" type="text" id="billingName">
+          </div>
+          <div class="fd-col fd-col-md--4 fd-col-lg--1">
+            <label class="fd-form-label" for="billingEmail">E-mail:</label>
+          </div>
+          <div class="fd-col fd-col-md--8 fd-col-lg--2">
+            <input class="fd-input" type="text" id="billingEmail">
+          </div>
+        </div>
+        <div class="fd-row fd-form-item">
+          <div class="fd-col fd-col-md--4 fd-col-lg--2">
+            <label class="fd-form-label" for="billingPhone">Phone:</label>
+          </div>
+          <div class="fd-col fd-col-md--8 fd-col-lg--2">
+            <input class="fd-input" type="number" id="billingPhone">
+          </div>
+          <div class="fd-col fd-col-md--4 fd-col-lg--1">
+            <label class="fd-form-label" for="billingFax">Fax:</label>
+          </div>
+          <div class="fd-col fd-col-md--8 fd-col-lg--2">
+            <input class="fd-input" type="text" id="billingFax">
+          </div>
+        </div>
+
+        <!-- Billing Address -->
+        <div class="fd-row fd-form-item subtitle">
+          <div class="fd-col">
+            <div class="fd-object-identifier fd-margin--sm">
+              <p class="fd-object-identifier__title fd-object-identifier__title--bold">Billing Address</p>
+            </div>
+          </div>
+        </div>
+        <div class="fd-row fd-form-item">
+          <div class="fd-col fd-col-md--4 fd-col-lg--2">
+            <label class="fd-form-label" for="billingAddress">Address:</label>
+          </div>
+          <div class="fd-col fd-col-md--8 fd-col-lg--5">
+            <textarea class="fd-textarea" id="billingAddress"></textarea>
+          </div>
+        </div>
+
+        <!-- Documents Requirement -->
+        <div class="fd-row fd-form-item subtitle">
+          <div class="fd-col">
+            <div class="fd-object-identifier fd-margin--sm">
+              <p class="fd-object-identifier__title fd-object-identifier__title--bold">Documents Requirement (for new customer)</p>
+            </div>
+          </div>
+        </div>
+        <div class="fd-row fd-form-item">
+          <div class="fd-col fd-col-md--4 fd-col-lg--2">&nbsp;</div>
+          <div class="fd-col fd-col-md--8 fd-col-lg--5">
+            <div class="fd-form-item">
+              <input type="checkbox" class="fd-checkbox" id="copyKtp">
+              <label class="fd-checkbox__label" for="copyKtp">
+                <span class="fd-checkbox__checkmark" aria-hidden="true"></span>
+                <div class="fd-checkbox__label-container">
+                  <span class="fd-checkbox__text">Copy of ID/Fotocopy KTP</span>
+                </div>
+              </label>
+            </div>
+            <div class="fd-form-item">
+              <input type="checkbox" class="fd-checkbox" id="copyNpwp">
+              <label class="fd-checkbox__label" for="copyNpwp">
+                <span class="fd-checkbox__checkmark" aria-hidden="true"></span>
+                <div class="fd-checkbox__label-container">
+                  <span class="fd-checkbox__text">Copy of Tax Registered Number / Fotocopy NPWP</span>
+                </div>
+              </label>
+            </div>
+            <div class="fd-form-item">
+              <input type="checkbox" class="fd-checkbox" id="copyAkte">
+              <label class="fd-checkbox__label" for="copyAkte">
+                <span class="fd-checkbox__checkmark" aria-hidden="true"></span>
+                <div class="fd-checkbox__label-container">
+                  <span class="fd-checkbox__text">Copy of Deed Company Estabilishment / Fotocopy akta pendirian perusahaan</span>
+                </div>
+              </label>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- PT ADIDAYA INFOCOM LESTARI -->
+      <div class="fd-row">
+        <div class="fd-form-header fd-margin-top-bottom--sm">
+          <span class="fd-form-header__text">PT ADIDAYA INFOCOM LESTARI</span>
+        </div>
+
+        <!-- Area Manager -->
+        <div class="fd-row fd-form-item subtitle">
+          <div class="fd-col">
+            <div class="fd-object-identifier fd-margin--sm fd-margin-top--tiny">
+              <p class="fd-object-identifier__title fd-object-identifier__title--bold">Area Manager</p>
+            </div>
+          </div>
+        </div>
+        <div class="fd-row fd-form-item">
+          <div class="fd-col fd-col-md--4 fd-col-lg--2">
+            <label class="fd-form-label" for="areaName">Name:</label>
+          </div>
+          <div class="fd-col fd-col-md--8 fd-col-lg--2">
+            <input class="fd-input" type="text" id="areaName">
+          </div>
+          <div class="fd-col fd-col-md--4 fd-col-lg--1">
+            <label class="fd-form-label" for="areaEmail">E-mail:</label>
+          </div>
+          <div class="fd-col fd-col-md--8 fd-col-lg--2">
+            <input class="fd-input" type="text" id="areaEmail">
+          </div>
+        </div>
+        <div class="fd-row fd-form-item">
+          <div class="fd-col fd-col-md--4 fd-col-lg--2">
+            <label class="fd-form-label" for="areaPhone">Phone:</label>
+          </div>
+          <div class="fd-col fd-col-md--8 fd-col-lg--2">
+            <input class="fd-input" type="number" id="areaPhone">
+          </div>
+          <div class="fd-col fd-col-md--4 fd-col-lg--1">
+            <label class="fd-form-label" for="areaFax">Fax:</label>
+          </div>
+          <div class="fd-col fd-col-md--8 fd-col-lg--2">
+            <input class="fd-input" type="text" id="areaFax">
+          </div>
+        </div>
+      </div>
+
+      <!-- Customer Order Form Confirmation -->
+      <div class="fd-row">
+        <div class="fd-form-header fd-margin-top-bottom--sm">
+          <span class="fd-form-header__text">Customer Order Form Confirmation</span>
+        </div>
+
+        <!-- Service & Internet backnone -->
+        <div class="fd-row fd-form-item subtitle">
+          <div class="fd-col">
+            <div class="fd-object-identifier fd-margin--sm fd-margin-top--tiny">
+              <p class="fd-object-identifier__title fd-object-identifier__title--bold">Service & Internet backnone</p>
+            </div>
+          </div>
+        </div>
+        <div class="fd-row fd-form-item">
+          <div class="fd-col fd-col-md--4 fd-col-lg--2">
+            <label class="fd-form-label" for="serviceInstall">Installation Change:</label>
+          </div>
+          <div class="fd-col fd-col-md--8 fd-col-lg--2">
+            <input class="fd-input" type="text" id="areaFax" formatType="currency" currency="IDR" formControlName="serviceInstall">
+          </div>
+          <div class="fd-col fd-col-md--4 fd-col-lg--1">
+            <label class="fd-form-label" for="serviceYearly">Yearly:</label>
+          </div>
+          <div class="fd-col fd-col-md--8 fd-col-lg--2">
+            <input class="fd-input" type="text" id="areaFax" formatType="currency" currency="IDR" formControlName="serviceYearly">
+          </div>
+        </div>
+        <div class="fd-row fd-form-item">
+          <div class="fd-col fd-col-md--4 fd-col-lg--2">
+            <label class="fd-form-label" for="serviceBilling">Billing Effective Date:</label>
+          </div>
+          <div class="fd-col fd-col-md--8 fd-col-lg--2">
+            <input class="fd-input" type="date" id="serviceBilling">
+          </div>
+          <div class="fd-col fd-col-md--4 fd-col-lg--1">
+            <label class="fd-form-label" for="serviceDeposit">Deposit:</label>
+          </div>
+          <div class="fd-col fd-col-md--8 fd-col-lg--2">
+            <div class="fd-input-group">
+              <span class="fd-input-group__addon">Rp</span>
+              <input class="fd-input fd-input-group__input" type="text" id="serviceDeposit">
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Technical Spesification -->
+      <div class="fd-row">
+        <div class="fd-form-header fd-margin-top-bottom--sm">
+          <span class="fd-form-header__text">Technical Spesification</span>
+        </div>
+
+        <!-- Support By Radio Link -->
+        <div class="fd-row fd-form-item subtitle">
+          <div class="fd-col">
+            <div class="fd-object-identifier fd-margin--sm fd-margin-top--tiny">
+              <p class="fd-object-identifier__title fd-object-identifier__title--bold">Support By Radio Link</p>
+            </div>
+          </div>
+        </div>
+        <div class="fd-row fd-form-item">
+          <div class="fd-col fd-col-md--4 fd-col-lg--2">
+            <label class="fd-form-label" for="supportNotes">Notes:</label>
+          </div>
+          <div class="fd-col fd-col-md--8 fd-col-lg--5">
+            <textarea class="fd-textarea" id="supportNotes"></textarea>
+          </div>
+        </div>
+        <div class="fd-row fd-form-item">
+          <div class="fd-col fd-col-md--4 fd-col-lg--2">
+            <label class="fd-form-label" for="supportTerm">Term & Condition:</label>
+          </div>
+          <div class="fd-col fd-col-md--8 fd-col-lg--5">
+            <select class="fd-input" id="supportTerm" (change)="selectTermCondition($event.target)">
+              @for (select of dsTermCondition; track $index) {
+                <option [value]="select.id">{{ select.name }}</option>
+              }
+            </select>
+          </div>
+        </div>
+      </div>
+
+      <!-- Activation Date -->
+      <div class="fd-row">
+        <div class="fd-form-header fd-margin-top-bottom--sm">
+          <span class="fd-form-header__text">Activation Date</span>
+        </div>
+
+        <!-- Contact Period -->
+        <div class="fd-row fd-form-item subtitle">
+          <div class="fd-col">
+            <div class="fd-object-identifier fd-margin--sm fd-margin-top--tiny">
+              <p class="fd-object-identifier__title fd-object-identifier__title--bold">Contact Period</p>
+            </div>
+          </div>
+        </div>
+        <div class="fd-row fd-form-item">
+          <div class="fd-col fd-col-md--4 fd-col-lg--2">
+            <label class="fd-form-label" for="periodStart">Start date:</label>
+          </div>
+          <div class="fd-col fd-col-md--8 fd-col-lg--2">
+            <input class="fd-input" type="date" id="periodStart">
+          </div>
+          <div class="fd-col fd-col-md--4 fd-col-lg--1">
+            <label class="fd-form-label" for="periodEnd">End date:</label>
+          </div>
+          <div class="fd-col fd-col-md--8 fd-col-lg--2">
+            <input class="fd-input" type="date" id="periodEnd">
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>

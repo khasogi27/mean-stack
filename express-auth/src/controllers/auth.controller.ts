@@ -5,6 +5,7 @@ import { v4 as uuidv4 } from 'uuid';
 import { comparePassword, signToken } from '@/helpers/index.helper';
 import { TResponseStatus, IResponseJson } from '@/interfaces/response.interface';
 import { IUser } from '@/interfaces/user.interface';
+import nodemailer from 'nodemailer';
 
 export class AuthController {
   
@@ -89,6 +90,84 @@ export class AuthController {
       }).catch((error: any) => {
         res.status(401 as TResponseStatus).json({ code: 1, message: error.message } as IResponseJson);
       });
+  }
+
+  static resetPassword(req: Request, res: Response): void {
+    const reqBody: IUser = req.body;
+
+    userModel.findOne({ email: reqBody.email }) 
+      .then((user: IUser | null) => {
+        if (!user) {
+          res.status(401 as TResponseStatus).json({ 
+            code: 1, 
+            message: 'Validation failed', 
+            result: { errors: { email: ['Authenticion Email Failed'] } } 
+          } as IResponseJson);
+        } else {
+          const transporter = nodemailer.createTransport({
+            port: 465, // true for 465, false for other ports
+            host: "smtp.gmail.com",
+            auth: { user: 'youremail@gmail.com', pass: 'password' },
+            secure: true,
+          });
+          
+          const mailData = {
+            from: 'khasogi27@gmail.com',  // sender address
+            to: user.email,   // list of receivers
+            subject: 'Sending Email using Node.js',
+            text: 'That was easy!',
+            html: '<b>Hey there! </b> <br> This is our first message sent with Nodemailer<br/>',
+          };
+      
+          transporter.sendMail(mailData, (error, data) => {
+            if (error) {
+              console.log(error, 'error')
+              res.status(401 as TResponseStatus).json({ code: 1, message: error.message } as IResponseJson)
+            } else {
+              res.status(200 as TResponseStatus).json({ code: 0, message: data.messageId } as IResponseJson)
+            }
+          });
+        }
+      }).catch((error: any) => {
+        res.status(401 as TResponseStatus).json({ code: 1, message: error.message } as IResponseJson);
+      });
+
+  }
+
+  static sendPasscode(req: Request, res: Response): void {
+    const { to, subject, text } = req.body;
+    
+    const mailData = {
+      from: 'youremail@gmail.com',
+      to: to,
+      subject: subject,
+      text: text,
+      html: '<b>Hey there! </b><br> This is our first message sent with Nodemailer<br/>',
+      attachments: [{ // file on disk as an attachment
+          filename: 'nodemailer.png',
+          path: 'nodemailer.png'
+        },
+        { // file on disk as an attachment
+          filename: 'text_file.txt',
+          path: 'text_file.txt'
+        }
+      ]
+    };
+
+    const transporter = nodemailer.createTransport({
+      port: 465, // true for 465, false for other ports
+      host: "smtp.gmail.com",
+      auth: { user: 'youremail@gmail.com', pass: 'password' },
+      secure: true,
+    });
+
+    transporter.sendMail(mailData, (error, data) => {
+        if (error) {
+          res.status(401 as TResponseStatus).json({ code: 1, message: error.message } as IResponseJson);
+        } else {
+          res.status(200 as TResponseStatus).json({ code: 1, message: data.messageId } as IResponseJson);
+        }
+    });
   }
 
 }

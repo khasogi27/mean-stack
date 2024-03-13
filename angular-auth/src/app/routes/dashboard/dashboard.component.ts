@@ -4,6 +4,16 @@ import { RouterModule } from '@angular/router';
 
 type TimeOfDay = 'morning' | 'afternoon' | 'evening' | 'night' | 'today';
 
+interface Tile {
+  index: number;
+  url: string;
+  title: string;
+  subtitle: string;
+  footerText: string;
+  contentIcon?: string;
+  footerSection: string;
+}
+
 @Component({
   selector: 'app-dashboard',
   standalone: true,
@@ -14,8 +24,16 @@ type TimeOfDay = 'morning' | 'afternoon' | 'evening' | 'night' | 'today';
 export class DashboardComponent {
   public progress: number = 0;
   public getToday: TimeOfDay = 'today';
+  public dsTitleBasic: Tile[] = [];
 
   constructor() {
+    this.dsTitleBasic = [
+      { index: 0, url: '/user', title: 'User', subtitle: 'Subtitle', footerText: 'Now', footerSection: 'Footer', contentIcon: 'refresh' },
+      { index: 1, url: '/job-schedule', title: 'Job Schedule', subtitle: 'Subtitle', footerText: 'Now', footerSection: 'Footer', contentIcon: 'refresh' },
+      { index: 2, url: '/subscription', title: 'Subscription', subtitle: 'Subtitle', footerText: 'Now', footerSection: 'Footer', contentIcon: 'refresh' },
+      { index: 3, url: '/local-loop', title: 'Local Loop', subtitle: 'Subtitle', footerText: 'Now', footerSection: 'Footer', contentIcon: 'refresh' },
+    ];
+
     setInterval(() => {
       if (this.progress < 100) {
         this.progress++;

@@ -1,19 +1,22 @@
 import { CommonModule } from '@angular/common';
-import { AfterViewInit, Component } from '@angular/core';
+import { AfterViewInit, Component, Type, booleanAttribute, inject } from '@angular/core';
 import { OverlayModule } from '@angular/cdk/overlay';
 import { HttpClient, HttpClientModule } from '@angular/common/http';
 import { environment } from '../../../environments/environment.development';
+import { BreakpointState, LayoutModule } from '@angular/cdk/layout';
+import { BreakpointObserverService } from '../../shared/services/breakpoint-observer.service';
+import { filter, map, of, switchMap } from 'rxjs';
 
 @Component({
   selector: 'app-data-base',
   standalone: true,
-  imports: [CommonModule, OverlayModule, HttpClientModule],
+  imports: [CommonModule, OverlayModule, HttpClientModule, LayoutModule],
   templateUrl: './data-base.component.html',
   styleUrl: './data-base.component.scss'
 })
 export class DataBaseComponent implements AfterViewInit {
   hide_user_select: boolean = true;
-  hide_object_select: boolean = true;
+  hide_user_side_select: boolean = true;
   ds_users: any[] = [];
   ds_objects: any[] = [];
   ds_filtered_objects: any[] = [];
@@ -27,21 +30,36 @@ export class DataBaseComponent implements AfterViewInit {
   public isProgress: boolean = false;
   public progress: number = 0;
 
-  public mainWidth: number = 65;
-  public sideWidth: number = 35;
+  public isSidepage: boolean = false;
+
+  public mainWidth: number = 0;
+  public sideWidth: number = 100;
 
   public isNewBackup: boolean = false;
+  public mobileMode: boolean = false;
 
-  constructor(private http: HttpClient) {
-    this.onToggleSideContent();
+  private http: HttpClient = inject(HttpClient);
+  private breakpointService: BreakpointObserverService = inject(BreakpointObserverService);
+
+  constructor() {
+    this.breakpointService.getBreakpointObserver(['XSmall', 'Small']).subscribe(e => {
+      if (typeof e === 'boolean') this.mobileMode = e;
+    });
+
+    for (let i = 0; i < 50; i++) {
+      this.ds_filtered_objects.push({ name: 'db1', start: 'start1', end: 'end1', type: 'type1', status_type: 'text', value: 10, max: 100, width: 100 });
+    }
+    if (this.ds_object_types.length == 0) this.onSideVisibleContent();
+    else this.onSideVisibleContent('detail');
   }
-
+  
   ngAfterViewInit(): void {
-    // this.refresh();
+    this.refresh();
   }
 
-  on_user_selected(name: string) {
-    this.hide_user_select = !this.hide_user_select;
+  on_user_selected(action: 'mainSelect' | 'sideSelect',name: string) {
+    if (action == 'mainSelect') this.hide_user_select = true;
+    else if (action == 'sideSelect') this.hide_user_side_select = true;
     if (this.selected_user == name) return;
     this.selected_user = name;
 
@@ -74,7 +92,7 @@ export class DataBaseComponent implements AfterViewInit {
   }
 
   on_object_type_selected(name: string) {
-    this.hide_object_select = !this.hide_object_select;
+    this.hide_user_side_select = !this.hide_user_side_select;
     if (this.selected_obj_type == name) return;
     this.selected_obj_type = name;
     if (name == 'ALL') {
@@ -92,7 +110,7 @@ export class DataBaseComponent implements AfterViewInit {
     this.ds_objects = [];
     this.ds_filtered_objects = [];
     this.ds_users = [];
-    this.hide_object_select = true;
+    this.hide_user_side_select = true;
     this.hide_user_select = true;
     this.selected_obj_type = '';
     this.selected_user = '';
@@ -105,11 +123,11 @@ export class DataBaseComponent implements AfterViewInit {
     //   this.ds_users = resp.data;
     // });
 
-    this.isNewBackup = false;
+    this.ds_users = [{ name: 'name1'}, { name: 'name2' }];
+
     for (let i = 0; i < 50; i++) {
-      this.ds_filtered_objects.push({ name: 'db1', type: 'type1', status_type: 'text', value: 10, max: 100, width: 100 });
+      this.ds_filtered_objects.push({ name: 'db1', start: 'start1', end: 'end1', type: 'type1', status_type: 'text', value: 10, max: 100, width: 100 });
     }
-    this.onToggleSideContent();
   }
 
   isAllSelected() {
@@ -149,59 +167,33 @@ export class DataBaseComponent implements AfterViewInit {
     },100);
   }
 
-  show_text() {
-    for (let item of this.ds_filtered_objects) {
-      if (item['id'] == 73010) {
-        item['status_type'] = 'text';
-        break;
-      }
-    }
-  }
-
-  show_bar() {
-    for (let item of this.ds_filtered_objects) {
-      if (item['id'] == 73010) {
-        item['status_type'] = 'bar';
-        item['value'] = 5;
-        item['max'] = 7;
-        item['width'] = ~~(5 * 100 / 7) + '%';
-        break;
-      }
-    }
-  }
-
-  new() {
-    this.isNewBackup = !this.isNewBackup;
-    for (let i = 0; i < 50; i++) {
-      this.ds_filtered_objects.push({ name: 'db1', type: 'type1', status_type: 'text', value: 10, max: 100, width: 100 });
-    }
-    this.onToggleSideContent();
+  newBackup() {
+    this.onSideVisibleContent('new');
   }
 
   clear() {
     this.ds_filtered_objects = [];  
-    this.onToggleSideContent();
+    this.onSideVisibleContent();
   }
 
-  onToggleSideContent() {
-    if (this.ds_filtered_objects.length != 0) {
-      if (this.mainWidth === 65) {
-        this.sideWidth = this.mainWidth = 50;
-      } else  {
-        this.sideWidth = 35;
-        this.mainWidth = 65;
-      }
+  onDecline() {
+    this.onSideVisibleContent();
+  }
+
+  
+  onSideVisibleContent(action?: 'new' | 'detail') {
+    if (action == 'new' || action == 'detail') {
+      this.sideWidth = this.mainWidth = 50;
+      if (action == 'new') this.isProgress = !(this.isNewBackup = this.isSidepage = true);
+      else this.isNewBackup = !(this.isProgress = this.isSidepage = true);
     } else {
+      this.isProgress = this.isSidepage = this.isNewBackup = false;
       this.sideWidth = 100;
     }
   }
 
   get progressDasharray(): string {
     return this.progress + ' '  + (100 - this.progress);
-  }
-
-  get iconSeparator(): string {
-    return this.mainWidth === 65 ? 'sap-icon--slim-arrow-left' : 'sap-icon--slim-arrow-right';
   }
 
   get updateBarColor(): 'positive' | 'informative' | 'critical' {
