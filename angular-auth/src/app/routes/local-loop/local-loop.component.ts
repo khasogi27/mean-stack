@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 
 import { LeafletDirective, LeafletModule } from '@asymmetrik/ngx-leaflet';
 import * as L from "leaflet";
+import { LineString, MultiLineString } from 'geojson';
 
 @Component({
   selector: 'app-local-loop',
@@ -39,7 +40,7 @@ export class LocalLoopComponent {
     ],
   };
 
-  public layerPolyline = [
+  public layerPolyline: L.Polyline<LineString | MultiLineString, any>[] = [
     L.polyline([
       [this._initCenterCoord.lat, this._initCenterCoord.lng], 
       [-6.1688863, 106.8403244], 
@@ -68,7 +69,7 @@ export class LocalLoopComponent {
     iconAnchor: [12, 38],
   });
 
-  public layerMarker: L.Marker<any>[] = [
+  public layerMarker: L.Marker<LineString | MultiLineString>[] = [
     L.marker(
       [ -6.1753924, 106.8271528], 
       { draggable: true, icon: this._iconAend  }
@@ -82,6 +83,8 @@ export class LocalLoopComponent {
   constructor() {}
 
   onClick(args: L.LeafletMouseEvent) {
+    console.log(args.latlng, '<<< args');
+
     L.popup()
     .setLatLng(args.latlng)
     .setContent(`<p>LatLng : ${args.latlng.lat}, ${args.latlng.lng}</p>`)
